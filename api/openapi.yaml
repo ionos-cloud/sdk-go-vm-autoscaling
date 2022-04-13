@@ -1,0 +1,1898 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@cloud.ionos.com
+    name: IONOS Cloud Support
+    url: https://docs.ionos.com/faq/contact
+  description: |-
+    VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.
+
+    Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.
+
+    When target replica count is specified, Auto Scaling will maintain the set number on instances.
+
+    When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+  termsOfService: https://www.ionos.de/terms-gtc/terms-enterprise-cloud/enterprise-terms/
+  title: VM Auto Scaling service (CloudAPI)
+  version: "1.0"
+  x-sdk-patch-level: 2
+externalDocs:
+  description: More documentation
+  url: https://docs.ionos.com/cloud
+servers:
+- description: Production
+  url: https://api.ionos.com
+security:
+- basicAuth: []
+- tokenAuth: []
+tags:
+- description: |-
+    An autoscaling group manages a set of VMs by changing the number of instances (the replica count), based on a given metric. Note the limits on the maximum number of groups, the maximum number of servers, and the minimum delta between the ‘scaleIn’ and ‘scaleOut’ thresholds.
+
+    This operation is restricted to contract owner, admin, and users with permissions for accessing the data center, hosting the autoscaling group.
+  name: Groups
+- description: Endpoints for documentation purpose.
+  name: Documentation
+paths:
+  /cloudapi/autoscaling/groups:
+    get:
+      description: List all autoscaling groups for your account.
+      operationId: autoscalingGroupsGet
+      parameters:
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Define the property to be used for ordering the returned list;
+          valid values are 'createdDate' and 'lastModifiedDate'.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: createdDate
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollection'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: List autoscaling groups
+      tags:
+      - Groups
+    post:
+      description: "Create autoscaling groups with this POST method. Creation of a\
+        \ group will trigger the creation of two monitoring alarms, for ‘Scale In’\
+        \ and ‘Scale Out’ operations, according to \"policy\" settings.\n\n \"properties.name\"\
+        \ must not be null or blank.\n\n \"properties.targetReplicaCount\" is optional\
+        \ attribute which must be >= minReplicaCount and <= maxReplicaCount if provided\
+        \ in the request body.\n\n \"properties.minReplicaCount\" must be >= 0 and\
+        \ <= 200.\n\n \"properties.maxReplicaCount\" must be >= 0 and <= 200.\n\n\
+        \ \"properties.datacenter.id\" must be a valid data center ID.\n\n \"properties.policy.metric\"\
+        \ must be one of: INSTANCE_CPU_UTILIZATION_AVERAGE, INSTANCE_NETWORK_IN_BYTES,\
+        \ INSTANCE_NETWORK_OUT_BYTES, INSTANCE_NETWORK_IN_PACKETS, INSTANCE_NETWORK_OUT_PACKETS.\n\
+        \n \"properties.policy.unit\" must be one of:  PER_SECOND, PER_MINUTE, PER_HOUR,\
+        \ TOTAL.\n TOTAL can be combined only with INSTANCE_CPU_UTILIZATION_AVERAGE.\n\
+        \n \"properties.policy.range\" must be >= 2 minutes.\n\n If \"properties.policy.unit\"\
+        \ is \"TOTAL\", then \"properties.policy.scaleOutThreshold - properties.policy.scaleInThreshold\"\
+        \ must be >= 40. \n\n \"properties.policy.scaleInAction.amount\" (the same\
+        \ is true for \"properties.policy.scaleOutAction.amount\") must be: \n in\
+        \ case of properties.policy.scaleInAction.amountType = ABSOLUTE: 1 <= properties.policy.scaleInAction.amount\
+        \ <= 10\n in case of properties.policy.scaleInAction.amountType = PERCENTAGE:\
+        \ 1 <= properties.policy.scaleInAction.amount <= 200\n\n \"properties.policy.scaleInAction.cooldownPeriod\"\
+        \ (the same is true for \"properties.policy.scaleOutAction.cooldownPeriod\"\
+        ) must be: >= 2 minutes and <= 24 hours with a default value of 5 minutes\
+        \ if not provided in the request payload or given with null, empty string\
+        \ or spaces."
+      operationId: autoscalingGroupsPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPostResponse'
+          description: The user-provided resource was created successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseError'
+          description: The request body could not be parsed.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "422":
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ErrorGroupValidate'
+                - properties:
+                    httpStatus:
+                      example: 422
+                      format: int32
+                      type: integer
+                    messages:
+                      items:
+                        $ref: '#/components/schemas/ErrorGroupValidateMessage'
+                      type: array
+          description: The user-provided resource did not pass all validations.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Create autoscaling groups
+      tags:
+      - Groups
+  /cloudapi/autoscaling/groups/{groupId}:
+    delete:
+      description: Delete the specified autoscaling group; deletion of the associated
+        servers and volumes is presently not implemented.
+      operationId: autoscalingGroupsDelete
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: The requested resource was deleted.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Delete autoscaling groups.
+      tags:
+      - Groups
+    get:
+      description: Retrieve the details for the autoscaling group with the specified
+        UUID.
+      operationId: autoscalingGroupsFindById
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Retrieve autoscaling groups by UUID
+      tags:
+      - Groups
+    put:
+      description: |-
+        Update the specified autoscaling group.
+        "properties.datacenter.id" is immutable after creation and cannot be updated.
+         The other validations are the same as when creating a group.
+      operationId: autoscalingGroupsPut
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUpdate'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: The user-provided resource was updated.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseError'
+          description: The request body could not be parsed.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Update autoscaling groups
+      tags:
+      - Groups
+  /cloudapi/autoscaling/groups/{groupId}/actions:
+    get:
+      description: Retrieve the scaling actions for the specified autoscaling group;
+        presently, only the last ten actions are returned.
+      operationId: autoscalingGroupsActionsGet
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Define the property to be used for ordering the returned list;
+          valid values are 'createdDate' and 'lastModifiedDate'.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: createdDate
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionCollection'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Retrieve last ten actions
+      tags:
+      - Groups
+  /cloudapi/autoscaling/groups/{groupId}/actions/{actionId}:
+    get:
+      description: Retrieve the details, such as metadata, properties, and the current
+        status, for the specified action.
+      operationId: autoscalingGroupsActionsFindById
+      parameters:
+      - explode: false
+        in: path
+        name: actionId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Retrieve action details
+      tags:
+      - Groups
+  /cloudapi/autoscaling/groups/{groupId}/servers:
+    get:
+      description: |-
+        Retrieve all servers, associated with the specified autoscaling group.
+
+        Please note that the autoscaling group server IDs are distinct from, and do not match the VM server IDs in the data center.
+      operationId: autoscalingGroupsServersGet
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      - description: Define the property to be used for ordering the returned list;
+          valid values are 'createdDate' and 'lastModifiedDate'.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: createdDate
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerCollection'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Retrieve autoscaling group servers
+      tags:
+      - Groups
+  /cloudapi/autoscaling/groups/{groupId}/servers/{serverId}:
+    get:
+      description: |-
+        Retrieve the properties of the specificed server in autoscaling group.
+
+        Please note that the autoscaling group server IDs are distinct from, and do not match the VM server IDs in the data center.
+      operationId: autoscalingGroupsServersFindById
+      parameters:
+      - explode: false
+        in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: serverId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: |+
+          Controls the detail depth of the response objects.
+
+            - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+            - depth=1: Direct properties and children references are included.
+
+            - depth=2: Direct properties and children properties are included.
+
+            - depth=3: Direct properties and children properties and children's children are included.
+
+            - depth=... and so on
+
+        explode: true
+        in: query
+        name: depth
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+          description: The requested resource was found and returned.
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+          description: The request was not properly authenticated.
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorAuthorize'
+          description: The user does not have the required privileges.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+          description: The requested resource does not exist.
+      security:
+      - basicAuth: []
+      - tokenAuth: []
+      summary: Retrieve group servers by UUID
+      tags:
+      - Groups
+  /cloudapi/autoscaling/openapi.json:
+    get:
+      description: Retrieve the OpenAPI specification in JSON format.
+      operationId: autoscalingOpenapiJsonGet
+      responses:
+        "200":
+          description: The requested resource was found and returned.
+      summary: Retrieve VM autoscaling OpenAPI spec (JSON)
+      tags:
+      - Documentation
+  /cloudapi/autoscaling/openapi.yaml:
+    get:
+      description: Retrieve the OpenAPI specification in YAML format (auto-generated
+        from the JSON).
+      operationId: autoscalingOpenapiYamlGet
+      responses:
+        "200":
+          description: The requested resource was found and returned.
+      summary: Retrieve VM autoscaling OpenAPI spec (YAML)
+      tags:
+      - Documentation
+components:
+  parameters:
+    depth:
+      description: |+
+        Controls the detail depth of the response objects.
+
+          - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.
+
+          - depth=1: Direct properties and children references are included.
+
+          - depth=2: Direct properties and children properties are included.
+
+          - depth=3: Direct properties and children properties and children's children are included.
+
+          - depth=... and so on
+
+      explode: true
+      in: query
+      name: depth
+      required: false
+      schema:
+        type: number
+      style: form
+    orderBy:
+      description: Define the property to be used for ordering the returned list;
+        valid values are 'createdDate' and 'lastModifiedDate'.
+      explode: true
+      in: query
+      name: orderBy
+      required: false
+      schema:
+        default: createdDate
+        type: string
+      style: form
+    groupId:
+      explode: false
+      in: path
+      name: groupId
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+  responses:
+    response_failure_authenticate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error401'
+      description: The request was not properly authenticated.
+    response_failure_authorize:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorAuthorize'
+      description: The user does not have the required privileges.
+    response_failure_find:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error404'
+      description: The requested resource does not exist.
+    response_failure_parse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ParseError'
+      description: The request body could not be parsed.
+    response_failure_validate_group:
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorGroupValidate'
+            - properties:
+                httpStatus:
+                  example: 422
+                  format: int32
+                  type: integer
+                messages:
+                  items:
+                    $ref: '#/components/schemas/ErrorGroupValidateMessage'
+                  type: array
+      description: The user-provided resource did not pass all validations.
+  schemas:
+    Action:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/Action_allOf'
+      description: A background action associated with an autoscaling group.
+    ActionAmount:
+      description: The type of the given amount.
+      enum:
+      - ABSOLUTE
+      - PERCENTAGE
+      example: ABSOLUTE
+      nullable: false
+      type: string
+    ActionCollection:
+      allOf:
+      - $ref: '#/components/schemas/Collection'
+      - $ref: '#/components/schemas/ActionCollection_allOf'
+    ActionProperties:
+      description: Properties of the resource. Contents depend on the resource type.
+      properties:
+        actionStatus:
+          allOf:
+          - $ref: '#/components/schemas/ActionStatus'
+        actionType:
+          allOf:
+          - $ref: '#/components/schemas/ActionType'
+        targetReplicaCount:
+          description: This action is considered successful when the associated autoscaling
+            group reaches this replica count.
+          example: 3
+          format: int64
+          nullable: false
+          type: integer
+      required:
+      - actionStatus
+      - actionType
+      - targetReplicaCount
+      type: object
+    ActionStatus:
+      enum:
+      - FAILED
+      - IN_PROGRESS
+      - SUCCESSFUL
+      example: SUCCESSFUL
+      nullable: false
+      readOnly: true
+      type: string
+    ActionType:
+      description: The different types of scaling actions. A `SCALE_IN` action will
+        delete servers until the group has at most `targetReplicaCount` servers. Contrarily,
+        a `SCALE_OUT` action will create servers until the group has at least `targetReplicaCount`
+        servers.
+      enum:
+      - SCALE_IN
+      - SCALE_OUT
+      example: SCALE_OUT
+      nullable: false
+      type: string
+    AvailabilityZone:
+      description: The zone where the VMs are created using this configuration.
+      enum:
+      - AUTO
+      - ZONE_1
+      - ZONE_2
+      example: AUTO
+      nullable: false
+      type: string
+    Collection:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/Collection_allOf'
+    CpuFamily:
+      description: CPU family for the VMs created using this configuration. If null,
+        the VM will be created with the default CPU family for the assigned location.
+      enum:
+      - AMD_OPTERON
+      - INTEL_SKYLAKE
+      - INTEL_XEON
+      example: INTEL_SKYLAKE
+      type: string
+    BusType:
+      default: VIRTIO
+      description: 'The bus type of the volume. Default is VIRTIO. Also supported:
+        IDE.'
+      enum:
+      - VIRTIO
+      - IDE
+      example: VIRTIO
+      type: string
+    DatacenterServer:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/DatacenterServer_allOf'
+    Entities:
+      description: Entities associated with this resource. Contents depend on the
+        resource type.
+      readOnly: true
+      type: object
+    Error:
+      properties:
+        httpStatus:
+          format: int32
+          type: integer
+        messages:
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+          type: array
+      type: object
+    ParseError:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/ErrorUuid'
+      - $ref: '#/components/schemas/ParseError_allOf'
+    Error401:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/Error401_allOf'
+    Error404:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/Error404_allOf'
+    ErrorAuthorize:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/ErrorAuthorize_allOf'
+    ErrorReplicaValidateMessage:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/ErrorReplicaValidateMessage_allOf'
+    ErrorGroupValidateMessage:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/ErrorGroupValidateMessage_allOf'
+    ErrorUuid:
+      properties:
+        errorUuid:
+          format: uuid
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+          type: string
+      type: object
+    ErrorMessage:
+      properties:
+        errorCode:
+          type: string
+        message:
+          type: string
+      type: object
+    ErrorMessageParse:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/ErrorMessageParse_allOf'
+    Error401Message:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/Error401Message_allOf'
+    Error404Message:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/Error404Message_allOf'
+    ErrorAuthorizeMessage:
+      allOf:
+      - $ref: '#/components/schemas/ErrorMessage'
+      - $ref: '#/components/schemas/ErrorAuthorizeMessage_allOf'
+    ErrorGroupValidate:
+      allOf:
+      - $ref: '#/components/schemas/Error'
+      - $ref: '#/components/schemas/ErrorGroupValidate_allOf'
+    Group:
+      allOf:
+      - $ref: '#/components/schemas/Item'
+      - $ref: '#/components/schemas/Group_allOf'
+      description: A group of virtual servers where replica count can be scaled automatically.
+      required:
+      - properties
+      type: object
+    GroupEntities:
+      properties:
+        actions:
+          allOf:
+          - $ref: '#/components/schemas/ActionCollection'
+        servers:
+          allOf:
+          - $ref: '#/components/schemas/ServerCollection'
+      type: object
+    GroupPostResponse:
+      allOf:
+      - $ref: '#/components/schemas/Group'
+      - $ref: '#/components/schemas/StartedActions'
+    GroupUpdate:
+      description: Update request for an autoscaling group.
+      example:
+        properties: ""
+      properties:
+        properties:
+          allOf:
+          - $ref: '#/components/schemas/GroupUpdatableProperties'
+          - $ref: '#/components/schemas/GroupImmutableProperties'
+      required:
+      - properties
+      type: object
+    GroupCollection:
+      allOf:
+      - $ref: '#/components/schemas/Collection'
+      - $ref: '#/components/schemas/GroupCollection_allOf'
+    GroupPolicy:
+      description: Specifies the behavior of this autoscaling group. A policy consists
+        of Triggers and Actions, whereby an Action is some kind of automated behavior,
+        and the Trigger defines the circumstances, under which the Action is triggered.
+        Currently, two separate Actions, namely Scaling In and Out are supported,
+        triggered through the thresholds, defined for a given Metric.
+      nullable: false
+      properties:
+        metric:
+          allOf:
+          - $ref: '#/components/schemas/Metric'
+        range:
+          default: 120s
+          description: Defines the time range, for which the samples will be aggregated.
+          example: P1D
+          format: duration
+          nullable: false
+          type: string
+        scaleInAction:
+          allOf:
+          - $ref: '#/components/schemas/GroupPolicyScaleInAction'
+          - description: Specifies the action to take when the `scaleInThreshold`
+              is exceeded. Hereby, scaling in is always about removing VMs that are
+              currently associated with this autoscaling group. Default termination
+              policy is OLDEST_SERVER_FIRST.
+        scaleInThreshold:
+          description: The lower threshold for the value of the `metric`. Will be
+            used with `less than` (<) operator. Exceeding this will start a Scale-In
+            action as specified by the `scaleInAction` property. The value must have
+            a higher minimum delta to the `scaleOutThreshold` depending on the `metric`
+            to avoid competitive actions at the same time.
+          example: 33
+          nullable: false
+          type: number
+        scaleOutAction:
+          allOf:
+          - $ref: '#/components/schemas/GroupPolicyScaleOutAction'
+          - description: Specifies the action to take when the `scaleOutThreshold`
+              is exceeded. Hereby, scaling out is always about adding new VMs to this
+              autoscaling group.
+        scaleOutThreshold:
+          description: The upper threshold for the value of the `metric`.  Will be
+            used with `greater than` (>) operator. Exceeding this will start a Scale-Out
+            action as specified by the `scaleOutAction` property. The value must have
+            a lower minimum delta to the `scaleInThreshold` depending on the `metric`
+            to avoid competitive actions at the same time.
+          example: 77
+          nullable: false
+          type: number
+        unit:
+          allOf:
+          - $ref: '#/components/schemas/QueryUnit'
+      required:
+      - metric
+      - scaleInAction
+      - scaleInThreshold
+      - scaleOutAction
+      - scaleOutThreshold
+      - unit
+      type: object
+    GroupPolicyScaleInAction:
+      nullable: false
+      properties:
+        amount:
+          description: "When `amountType == ABSOLUTE`, this is the number of VMs added\
+            \ or removed in one step. When `amountType == PERCENTAGE`, this is a percentage\
+            \ value, which will be applied to the autoscaling group's current `targetReplicaCount`\
+            \ in order to derive the number of VMs that will be added or removed in\
+            \ one step. There will always be at least one VM added or removed. \n\n\
+            For SCALE_IN operation now volumes are NOT deleted after the server deletion."
+          example: 1
+          nullable: false
+          type: number
+        amountType:
+          allOf:
+          - $ref: '#/components/schemas/ActionAmount'
+        cooldownPeriod:
+          default: 5m
+          description: Minimum time to pass after this Scaling action has started,
+            until the next Scaling action will be started. Additionally, if a Scaling
+            action is currently in progress, no second Scaling action will be started
+            for the same autoscaling group. Instead, the Metric will be re-evaluated
+            after the current Scaling action is completed (either successfully or
+            with failures). This is validated with a minimum value of 2 minutes and
+            a maximum of 24 hours currently. Default value is 5 minutes if not given.
+          example: 5m
+          format: duration
+          nullable: true
+          type: string
+        terminationPolicy:
+          allOf:
+          - $ref: '#/components/schemas/TerminationPolicyType'
+      required:
+      - amount
+      - amountType
+      type: object
+    TerminationPolicyType:
+      description: The type of the termination policy for the autoscaling group so
+        that a specific pattern is followed for Scaling-In instances. Default termination
+        policy is OLDEST_SERVER_FIRST
+      enum:
+      - OLDEST_SERVER_FIRST
+      - NEWEST_SERVER_FIRST
+      - RANDOM
+      example: OLDEST_SERVER_FIRST
+      nullable: true
+      type: string
+    GroupPolicyScaleOutAction:
+      nullable: false
+      properties:
+        amount:
+          description: "When `amountType == ABSOLUTE`, this is the number of VMs added\
+            \ or removed in one step. When `amountType == PERCENTAGE`, this is a percentage\
+            \ value, which will be applied to the autoscaling group's current `targetReplicaCount`\
+            \ in order to derive the number of VMs that will be added or removed in\
+            \ one step. There will always be at least one VM added or removed. \n\n\
+            For SCALE_IN operation now volumes are NOT deleted after the server deletion."
+          example: 1
+          nullable: false
+          type: number
+        amountType:
+          allOf:
+          - $ref: '#/components/schemas/ActionAmount'
+        cooldownPeriod:
+          default: 5m
+          description: Minimum time to pass after this Scaling action has started,
+            until the next Scaling action will be started. Additionally, if a Scaling
+            action is currently in progress, no second Scaling action will be started
+            for the same autoscaling group. Instead, the Metric will be re-evaluated
+            after the current Scaling action is completed (either successfully or
+            with failures). This is validated with a minimum value of 2 minutes and
+            a maximum of 24 hours currently. Default value is 5 minutes if not given.
+          example: 5m
+          format: duration
+          nullable: true
+          type: string
+      required:
+      - amount
+      - amountType
+      type: object
+    GroupProperties:
+      allOf:
+      - $ref: '#/components/schemas/GroupUpdatableProperties'
+      - $ref: '#/components/schemas/GroupImmutableProperties'
+    StartedActions:
+      properties:
+        startedActions:
+          description: Any background activity caused by this request. This allows
+            the caller to track the progress of such activity.
+          items:
+            $ref: '#/components/schemas/ActionResource'
+          readOnly: true
+          type: array
+      type: object
+    GroupUpdatableProperties:
+      properties:
+        maxReplicaCount:
+          description: Maximum replica count value for `targetReplicaCount`. Will
+            be enforced for both automatic and manual changes.
+          example: 10
+          format: int64
+          maximum: 200
+          minimum: 0
+          nullable: false
+          type: integer
+        minReplicaCount:
+          description: Minimum replica count value for `targetReplicaCount`. Will
+            be enforced for both automatic and manual changes.
+          example: 1
+          format: int64
+          maximum: 200
+          minimum: 0
+          nullable: false
+          type: integer
+        targetReplicaCount:
+          description: The target number of VMs in this Group. Depending on the scaling
+            policy, this number will be adjusted automatically. VMs will be created
+            or destroyed automatically in order to adjust the actual number of VMs
+            to this number. If targetReplicaCount is given in the request body then
+            it must be >= minReplicaCount and <= maxReplicaCount.
+          example: 1
+          format: int64
+          maximum: 200
+          minimum: 0
+          type: integer
+        name:
+          description: User-defined name for the autoscaling group.
+          example: 'Autoscaling Group #1'
+          maxLength: 255
+          nullable: false
+          type: string
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/GroupPolicy'
+        replicaConfiguration:
+          allOf:
+          - $ref: '#/components/schemas/ReplicaPropertiesPost'
+        datacenter:
+          allOf:
+          - $ref: '#/components/schemas/Resource'
+          - description: VMs for this autoscaling group will be created in this virtual
+              data center.
+            properties:
+              href:
+                description: URL to the object representation (absolute path)
+                example: https://api.ionos.com/cloudapi/v6/datacenters/09043280-aafc-49f7-a048-d61673f52024
+                format: uri
+                readOnly: true
+                type: string
+              type:
+                description: The type of object that has been created
+                example: datacenter
+                readOnly: true
+                type: string
+              id:
+                description: The resource's unique identifier
+                example: 09043280-aafc-49f7-a048-d61673f52024
+                readOnly: false
+                type: string
+      type: object
+    GroupImmutableProperties:
+      properties:
+        location:
+          description: Location of the data center.
+          example: de/txl
+          readOnly: true
+          type: string
+      required:
+      - data center
+      - location
+      type: object
+    Item:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/Item_allOf'
+    Metadata:
+      description: Metadata about the resource
+      properties:
+        createdBy:
+          description: The user who created the resource.
+          example: user@mail.local
+          nullable: false
+          type: string
+        createdByUserId:
+          description: The user who created the resource.
+          example: 919e4752-e700-40b1-9507-5ac545bb6355
+          nullable: false
+          type: string
+        createdDate:
+          description: When the resource was created.
+          example: 2021-06-21T08:46:01.249829Z
+          format: date-time
+          nullable: false
+          type: string
+        etag:
+          description: Resource etag
+          nullable: false
+          type: string
+        lastModifiedBy:
+          description: The last user who modified the resource.
+          example: user@mail.local
+          nullable: false
+          type: string
+        lastModifiedByUserId:
+          description: The last user who modified the resource.
+          example: 919e4752-e700-40b1-9507-5ac545bb6355
+          nullable: false
+          type: string
+        lastModifiedDate:
+          description: When the resource was last modified.
+          example: 2021-07-26T09:30:39.562006Z
+          format: date-time
+          nullable: false
+          type: string
+        state:
+          allOf:
+          - $ref: '#/components/schemas/MetadataState'
+          - description: Resource state
+            example: AVAILABLE
+            nullable: false
+      readOnly: true
+      required:
+      - createdBy
+      - createdByUserId
+      - createdDate
+      - etag
+      - lastModifiedBy
+      - lastModifiedByUserId
+      - lastModifiedDate
+      - state
+      type: object
+    ItemBasic:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/ItemBasic_allOf'
+    MetadataBasic:
+      description: Metadata about the resource
+      properties:
+        createdDate:
+          description: When the resource was created.
+          example: 2021-06-21T08:46:01.249829Z
+          format: date-time
+          nullable: false
+          type: string
+        etag:
+          description: Resource etag
+          nullable: false
+          type: string
+        lastModifiedDate:
+          description: When the resource was last modified.
+          example: 2021-07-26T09:30:39.562006Z
+          format: date-time
+          nullable: false
+          type: string
+        state:
+          allOf:
+          - $ref: '#/components/schemas/MetadataState'
+          - description: Resource state
+            example: AVAILABLE
+            nullable: false
+      readOnly: true
+      required:
+      - createdDate
+      - etag
+      - lastModifiedDate
+      - state
+      type: object
+    MetadataState:
+      enum:
+      - AVAILABLE
+      - BUSY
+      - INACTIVE
+      - SUSPENDED
+      example: AVAILABLE
+      type: string
+    Metric:
+      description: The Metric that should trigger the scaling actions. Metric values
+        are checked at fixed intervals.
+      enum:
+      - INSTANCE_CPU_UTILIZATION_AVERAGE
+      - INSTANCE_NETWORK_IN_BYTES
+      - INSTANCE_NETWORK_IN_PACKETS
+      - INSTANCE_NETWORK_OUT_BYTES
+      - INSTANCE_NETWORK_OUT_PACKETS
+      example: INSTANCE_CPU_UTILIZATION_AVERAGE
+      nullable: false
+      type: string
+    QueryUnit:
+      default: TOTAL
+      description: Units of the applied Metric.
+      enum:
+      - PER_HOUR
+      - PER_MINUTE
+      - PER_SECOND
+      - TOTAL
+      example: PER_MINUTE
+      nullable: false
+      type: string
+    Resource:
+      nullable: false
+      properties:
+        id:
+          description: Unique resource identifier
+          format: uuid
+          readOnly: true
+          type: string
+        type:
+          description: Resource type
+          readOnly: true
+          type: string
+        href:
+          description: Absolute URL to the resource's representation.
+          example: https://api.ionos.com/cloudapi/autoscaling
+          format: uri
+          readOnly: true
+          type: string
+      required:
+      - id
+      type: object
+    ServerResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/ServerResource_allOf'
+    ActionResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/ActionResource_allOf'
+    ActionsLinkResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/ActionsLinkResource_allOf'
+    ServersLinkResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/ServersLinkResource_allOf'
+    GroupResource:
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+      - $ref: '#/components/schemas/GroupResource_allOf'
+    Server:
+      allOf:
+      - $ref: '#/components/schemas/ItemBasic'
+      - $ref: '#/components/schemas/Server_allOf'
+    ServerCollection:
+      allOf:
+      - $ref: '#/components/schemas/Collection'
+      - $ref: '#/components/schemas/ServerCollection_allOf'
+    ServerProperties:
+      properties:
+        datacenterServer:
+          allOf:
+          - $ref: '#/components/schemas/DatacenterServer'
+        name:
+          example: Web server instance
+          type: string
+      required:
+      - datacenterServer
+      type: object
+    ReplicaNic:
+      properties:
+        lan:
+          description: Lan ID for this replica Nic.
+          example: 1
+          format: int32
+          minimum: 1
+          type: integer
+        name:
+          description: Name for this replica NIC.
+          example: LAN NIC 1
+          maxLength: 255
+          nullable: false
+          type: string
+        dhcp:
+          description: Dhcp flag for this replica Nic. This is an optional attribute
+            with default value of 'true' if not given in the request payload or given
+            as null.
+          example: true
+          nullable: true
+          type: boolean
+      required:
+      - lan
+      - name
+      type: object
+    ReplicaProperties:
+      nullable: false
+      properties:
+        availabilityZone:
+          allOf:
+          - $ref: '#/components/schemas/AvailabilityZone'
+        cores:
+          description: The total number of cores for the VMs.
+          example: 2
+          format: int32
+          minimum: 1
+          nullable: false
+          type: integer
+        cpuFamily:
+          allOf:
+          - $ref: '#/components/schemas/CpuFamily'
+        nics:
+          description: List of NICs associated with this Replica.
+          items:
+            $ref: '#/components/schemas/ReplicaNic'
+          type: array
+        ram:
+          description: The amount of memory for the VMs in MB, e.g. 2048. Size must
+            be specified in multiples of 256 MB with a minimum of 256 MB; however,
+            if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB.
+            If you set the RAM size more than 240GB, then ramHotPlug will be set to
+            FALSE and can not be set to TRUE unless RAM size not set to less than
+            240GB.
+          example: 2048
+          format: int32
+          nullable: false
+          type: integer
+      required:
+      - availabilityZone
+      - cores
+      - ram
+      type: object
+    ReplicaPropertiesPost:
+      allOf:
+      - $ref: '#/components/schemas/ReplicaProperties'
+      - $ref: '#/components/schemas/ReplicaPropertiesPost_allOf'
+    ReplicaPropertiesGet:
+      allOf:
+      - $ref: '#/components/schemas/ReplicaProperties'
+      - $ref: '#/components/schemas/ReplicaPropertiesGet_allOf'
+    ReplicaVolumeGet:
+      properties:
+        image:
+          description: The image installed on the volume. Only the UUID of the image
+            is presently supported.
+          example: 6e928bd0-3a8e-4821-a20a-54984b0c2d21
+          format: uuid
+          nullable: false
+          pattern: '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+          type: string
+        name:
+          description: Name of the replica volume.
+          example: Volume 1
+          maxLength: 255
+          nullable: false
+          type: string
+        size:
+          description: User-defined size for this replica volume in GB.
+          example: 30
+          format: int32
+          minimum: 1
+          type: integer
+        sshKeys:
+          description: Ssh keys that has access to the volume.
+          items:
+            example: |-
+              ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAklOUpkDHrfHY17SbrmTIpNLTGK9Tjom/BWDSU
+              GPl+nafzlHDTYW7hdI4yZ5ew18JH4JW9jbhUFrviQzM7xlELEVf4h9lFX5QVkbPppSwg0cda3
+              Pbv7kOdJ/MTyBlWXFCR+HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6RjsNAQwdsdMFvSlVK/7XA
+              t3FaoJoAsncM1Q9x5+3V0Ww68/eIFmb1zuUFljQJKprrX88XypNDvjYNby6vw/Pb0rwert/En
+              mZ+AW4OZPnTPI89ZPmVMLuayrD2cE86Z/il8b+gw3r3+1nKatmIkjn2so1d01QraTlMqVSsbx
+              NrRFi9wrf+M7Q== user@domain.local
+            type: string
+          type: array
+        type:
+          allOf:
+          - $ref: '#/components/schemas/VolumeHwType'
+        userData:
+          description: user-data (Cloud Init) for this replica volume.
+          example: ZWNobyAiSGVsbG8sIFdvcmxkIgo=
+          type: string
+        bus:
+          allOf:
+          - $ref: '#/components/schemas/BusType'
+      required:
+      - image
+      - name
+      - size
+      - type
+      type: object
+    ReplicaVolumePost:
+      allOf:
+      - $ref: '#/components/schemas/ReplicaVolumeGet'
+      - $ref: '#/components/schemas/ReplicaVolumePost_allOf'
+    VolumeHwType:
+      description: Storage Type for this replica volume (SSD or HDD).
+      enum:
+      - HDD
+      - SSD
+      - SSD_PREMIUM
+      - SSD_STANDARD
+      example: SSD
+      nullable: false
+      type: string
+    Action_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions/2ab638d4-b4b4-4a1a-9a33-553059364fc8
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 2ab638d4-b4b4-4a1a-9a33-553059364fc8
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-action
+          readOnly: true
+          type: string
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/MetadataBasic'
+        properties:
+          allOf:
+          - $ref: '#/components/schemas/ActionProperties'
+    ActionCollection_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions
+          readOnly: true
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Action'
+          type: array
+    Collection_allOf:
+      properties:
+        type:
+          description: The type of object that has been created
+          example: collection
+          readOnly: true
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Resource'
+          type: array
+    DatacenterServer_allOf:
+      description: Links to the actual server entity in the data center.
+      nullable: false
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/v6/datacenters/fc5965df-f38d-4a3e-baaa-770b917e40eb/servers/84f3d7c9-9a12-4334-8add-dcacd3f867a5
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 84f3d7c9-9a12-4334-8add-dcacd3f867a5
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: server
+          readOnly: true
+          type: string
+    ParseError_allOf:
+      properties:
+        httpStatus:
+          example: 400
+          type: int
+        messages:
+          items:
+            $ref: '#/components/schemas/ErrorMessageParse'
+          type: array
+    Error401_allOf:
+      properties:
+        httpStatus:
+          example: 401
+          format: int32
+          type: integer
+        messages:
+          items:
+            $ref: '#/components/schemas/Error401Message'
+          type: array
+    Error404_allOf:
+      properties:
+        httpStatus:
+          example: 404
+          format: int32
+          type: integer
+        messages:
+          items:
+            $ref: '#/components/schemas/Error404Message'
+          type: array
+    ErrorAuthorize_allOf:
+      properties:
+        httpStatus:
+          example: 403
+          format: int32
+          type: integer
+        messages:
+          items:
+            $ref: '#/components/schemas/ErrorAuthorizeMessage'
+          type: array
+    ErrorReplicaValidateMessage_allOf:
+      properties:
+        errorCode:
+          example: AUTOSCALE-7
+          type: string
+        message:
+          example: 'Configuration cannot be used to create the required resources.
+            Error message: [(root).entities.servers.items.[0].properties.ram] RAM
+            of requested server too small, 256 MB is minimum.'
+          type: string
+    ErrorGroupValidateMessage_allOf:
+      properties:
+        errorCode:
+          example: "100"
+          type: string
+        message:
+          example: properties.policy.range must be at least 120 seconds.
+          type: string
+    ErrorMessageParse_allOf:
+      properties:
+        errorCode:
+          example: 122
+          type: int
+        message:
+          example: 'Failed to parse request body. [line: 7, column: 31] The property
+            ''wrongPropertyName'' at path ''.properties.wrongPropertyName'' was not
+            expected.'
+          type: string
+    Error401Message_allOf:
+      properties:
+        errorCode:
+          example: "315"
+          type: string
+        message:
+          example: Unauthorized
+          type: string
+    Error404Message_allOf:
+      properties:
+        errorCode:
+          example: "309"
+          type: string
+        message:
+          example: The requested resource does not exist.
+          type: string
+    ErrorAuthorizeMessage_allOf:
+      properties:
+        errorCode:
+          example: AUTOSCALE-10
+          type: string
+        message:
+          example: VM Autoscaling feature is not enabled for your contract.
+          type: string
+    ErrorGroupValidate_allOf:
+      properties:
+        httpStatus:
+          example: 422
+          format: int32
+          type: integer
+        messages:
+          items:
+            $ref: '#/components/schemas/ErrorGroupValidateMessage'
+          type: array
+    Group_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 1d67ca27-d4c0-419d-9a64-9ea42dfdd036
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-group
+          readOnly: true
+          type: string
+        entities:
+          $ref: '#/definitions/GroupEntities'
+        properties:
+          allOf:
+          - $ref: '#/components/schemas/GroupProperties'
+    GroupCollection_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: groups
+          readOnly: true
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Group'
+          type: array
+    Item_allOf:
+      properties:
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/Metadata'
+        properties:
+          description: Properties of the resource. Contents depend on the resource
+            type.
+          type: object
+    ItemBasic_allOf:
+      properties:
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/MetadataBasic'
+        properties:
+          description: Properties of the resource. Contents depend on the resource
+            type.
+          type: object
+    ServerResource_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers/896f8ab3-595c-4489-828d-70df816e51bd
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 896f8ab3-595c-4489-828d-70df816e51bd
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-server
+          readOnly: true
+          type: string
+    ActionResource_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions/d8df1964-e923-4e63-af45-4c25d6687674
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: d8df1964-e923-4e63-af45-4c25d6687674
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-action
+          readOnly: true
+          type: string
+    ActionsLinkResource_allOf:
+      description: Scaling actions of the autoscaling group
+      properties:
+        id:
+          description: The resource's unique identifier
+          example: 1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: collection
+          readOnly: true
+          type: string
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/actions
+          format: uri
+          readOnly: true
+          type: string
+      readOnly: true
+    ServersLinkResource_allOf:
+      description: Servers of the autoscaling group
+      properties:
+        id:
+          description: The resource's unique identifier
+          example: 1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: collection
+          readOnly: true
+          type: string
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers
+          format: uri
+          readOnly: true
+          type: string
+      readOnly: true
+    GroupResource_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/954f32fd-5ed5-4b2d-8b66-3981e6c105dd
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 954f32fd-5ed5-4b2d-8b66-3981e6c105dd
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-group
+          readOnly: true
+          type: string
+    Server_allOf:
+      description: Links a data center server to an autoscaling group. Please note
+        that this entities UUID is different from that of the data center server,
+        whose UUID is stored in the `datacenterServer` property.
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers/20fd2b30-be53-4253-9d8e-96af69e24d57
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 20fd2b30-be53-4253-9d8e-96af69e24d57
+          readOnly: true
+          type: string
+        type:
+          description: The type of object that has been created
+          example: autoscaling-server
+          readOnly: true
+          type: string
+        properties:
+          allOf:
+          - $ref: '#/components/schemas/ServerProperties'
+    ServerCollection_allOf:
+      properties:
+        href:
+          description: URL to the object representation (absolute path)
+          example: https://api.ionos.com/cloudapi/autoscaling/groups/1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          description: The resource's unique identifier
+          example: 1d67ca27-d4c0-419d-9a64-9ea42dfdd036/servers
+          readOnly: true
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/Server'
+          type: array
+    ReplicaPropertiesPost_allOf:
+      properties:
+        volumes:
+          description: List of volumes associated with this Replica. Only a single
+            volume is currently supported.
+          items:
+            $ref: '#/components/schemas/ReplicaVolumePost'
+          maxItems: 1
+          type: array
+    ReplicaPropertiesGet_allOf:
+      properties:
+        volumes:
+          description: List of volumes associated with this Replica. Only a single
+            volume is currently supported.
+          items:
+            $ref: '#/components/schemas/ReplicaVolumeGet'
+          maxItems: 1
+          type: array
+      type: object
+    ReplicaVolumePost_allOf:
+      properties:
+        imagePassword:
+          description: Image password for this replica volume.
+          example: passw0rd
+          type: string
+  securitySchemes:
+    basicAuth:
+      description: 'You will need to base64 encode the string containing your credentials.
+        Separate your username and password with a colon, i.e., username:password
+        and send it as ''Authorization'' request header. More details: https://en.wikipedia.org/wiki/Basic_access_authentication'
+      scheme: basic
+      type: http
+    tokenAuth:
+      description: Please provide header value as 'Bearer <token>' and don't forget
+        to add 'Bearer' HTTP Authorization Scheme before the token.
+      in: header
+      name: Authorization
+      type: apiKey
