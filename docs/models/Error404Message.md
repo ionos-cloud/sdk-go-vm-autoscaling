@@ -1,7 +1,5 @@
 # Error404Message
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
@@ -11,6 +9,22 @@
 
 ## Methods
 
+### NewError404Message
+
+`func NewError404Message() *Error404Message`
+
+NewError404Message instantiates a new Error404Message object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewError404MessageWithDefaults
+
+`func NewError404MessageWithDefaults() *Error404Message`
+
+NewError404MessageWithDefaults instantiates a new Error404Message object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetErrorCode
 

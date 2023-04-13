@@ -1,21 +1,34 @@
 # Group
 
-A group of virtual servers where replica count can be scaled automatically.
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | The resource&#39;s unique identifier | [readonly] |
-|**Type** | Pointer to **string** | The type of object that has been created | [optional] [readonly] |
-|**Href** | Pointer to **string** | URL to the object representation (absolute path) | [optional] [readonly] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 |**Metadata** | Pointer to [**Metadata**](Metadata.md) |  | [optional] |
 |**Properties** | [**GroupProperties**](GroupProperties.md) |  | |
-|**Entities** | Pointer to [**GroupEntities**](GroupEntities.md) |  | [optional] |
+|**Entities** | Pointer to [**GroupPostEntities**](GroupPostEntities.md) |  | [optional] |
 
 ## Methods
 
+### NewGroup
+
+`func NewGroup(id string, properties GroupProperties, ) *Group`
+
+NewGroup instantiates a new Group object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewGroupWithDefaults
+
+`func NewGroupWithDefaults() *Group`
+
+NewGroupWithDefaults instantiates a new Group object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 
@@ -134,20 +147,20 @@ SetProperties sets Properties field to given value.
 
 ### GetEntities
 
-`func (o *Group) GetEntities() GroupEntities`
+`func (o *Group) GetEntities() GroupPostEntities`
 
 GetEntities returns the Entities field if non-nil, zero value otherwise.
 
 ### GetEntitiesOk
 
-`func (o *Group) GetEntitiesOk() (*GroupEntities, bool)`
+`func (o *Group) GetEntitiesOk() (*GroupPostEntities, bool)`
 
 GetEntitiesOk returns a tuple with the Entities field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEntities
 
-`func (o *Group) SetEntities(v GroupEntities)`
+`func (o *Group) SetEntities(v GroupPostEntities)`
 
 SetEntities sets Entities field to given value.
 

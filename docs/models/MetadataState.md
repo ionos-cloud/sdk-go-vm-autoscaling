@@ -1,14 +1,9 @@
 # MetadataState
 
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|AVAILABLE |
-|BUSY |
-|INACTIVE |
-|SUSPENDED |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 

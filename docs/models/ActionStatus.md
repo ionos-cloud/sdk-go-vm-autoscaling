@@ -1,13 +1,9 @@
 # ActionStatus
 
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|FAILED |
-|IN_PROGRESS |
-|SUCCESSFUL |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 

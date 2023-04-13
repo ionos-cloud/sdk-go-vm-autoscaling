@@ -1,15 +1,9 @@
 # VolumeHwType
 
-Storage Type for this replica volume (SSD or HDD).
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|HDD |
-|SSD |
-|SSD_PREMIUM |
-|SSD_STANDARD |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 

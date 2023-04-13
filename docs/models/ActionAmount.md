@@ -1,13 +1,9 @@
 # ActionAmount
 
-The type of the given amount.
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|ABSOLUTE |
-|PERCENTAGE |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 

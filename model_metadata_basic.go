@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -16,22 +16,23 @@ import (
 	"time"
 )
 
-// MetadataBasic Metadata about the resource
+// MetadataBasic The resource metadata.
 type MetadataBasic struct {
-	// When the resource was created.
+	// The date the resource was created.
 	CreatedDate *IonosTime `json:"createdDate"`
-	// Resource etag
+	// The resource etag.
 	Etag *string `json:"etag"`
-	// When the resource was last modified.
-	LastModifiedDate *IonosTime     `json:"lastModifiedDate"`
-	State            *MetadataState `json:"state"`
+	// The date the resource was last modified.
+	LastModifiedDate *IonosTime `json:"lastModifiedDate"`
+	// The resource state.
+	State *string `json:"state"`
 }
 
 // NewMetadataBasic instantiates a new MetadataBasic object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMetadataBasic(createdDate time.Time, etag string, lastModifiedDate time.Time, state MetadataState) *MetadataBasic {
+func NewMetadataBasic(createdDate time.Time, etag string, lastModifiedDate time.Time, state string) *MetadataBasic {
 	this := MetadataBasic{}
 
 	this.CreatedDate = &IonosTime{createdDate}
@@ -182,8 +183,8 @@ func (o *MetadataBasic) HasLastModifiedDate() bool {
 }
 
 // GetState returns the State field value
-// If the value is explicit nil, the zero value for MetadataState will be returned
-func (o *MetadataBasic) GetState() *MetadataState {
+// If the value is explicit nil, the zero value for string will be returned
+func (o *MetadataBasic) GetState() *string {
 	if o == nil {
 		return nil
 	}
@@ -195,7 +196,7 @@ func (o *MetadataBasic) GetState() *MetadataState {
 // GetStateOk returns a tuple with the State field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *MetadataBasic) GetStateOk() (*MetadataState, bool) {
+func (o *MetadataBasic) GetStateOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -204,7 +205,7 @@ func (o *MetadataBasic) GetStateOk() (*MetadataState, bool) {
 }
 
 // SetState sets field value
-func (o *MetadataBasic) SetState(v MetadataState) {
+func (o *MetadataBasic) SetState(v string) {
 
 	o.State = &v
 

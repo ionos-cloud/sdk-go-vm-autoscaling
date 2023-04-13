@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,19 +17,25 @@ import (
 
 // ReplicaVolumePost struct for ReplicaVolumePost
 type ReplicaVolumePost struct {
-	// The image installed on the volume. Only the UUID of the image is presently supported.
-	Image *string `json:"image"`
-	// Name of the replica volume.
+	// The image installed on the disk. Currently, only the UUID of the image is supported.  >Note that either 'image' or 'imageAlias' must be specified, but not both.
+	Image *string `json:"image,omitempty"`
+	// The image installed on the volume. Must be an 'imageAlias' as specified via the images API. Note that one of 'image' or 'imageAlias' must be set, but not both.
+	ImageAlias *string `json:"imageAlias,omitempty"`
+	// The replica volume name.
 	Name *string `json:"name"`
-	// User-defined size for this replica volume in GB.
+	// The size of this replica volume in GB.
 	Size *int32 `json:"size"`
-	// Ssh keys that has access to the volume.
+	// The SSH keys of this volume.
 	SshKeys *[]string     `json:"sshKeys,omitempty"`
 	Type    *VolumeHwType `json:"type"`
-	// user-data (Cloud Init) for this replica volume.
+	// The user data (Cloud Init) for this replica volume.
 	UserData *string  `json:"userData,omitempty"`
 	Bus      *BusType `json:"bus,omitempty"`
-	// Image password for this replica volume.
+	// The ID of the backup unit that the user has access to. The property is immutable and is only allowed to be set on creation of a new a volume. It is mandatory to provide either 'public image' or 'imageAlias' in conjunction with this property.
+	BackupunitId *string `json:"backupunitId,omitempty"`
+	// Determines whether the volume will be used as a boot volume. Set to NONE, the volume will not be used as boot volume. Set to PRIMARY, the volume will be used as boot volume and set to AUTO will delegate the decision to the provisioning engine to decide whether to use the voluem as boot volume. Notice that exactly one volume can be set to PRIMARY or all of them set to AUTO.
+	BootOrder *string `json:"bootOrder"`
+	// The image password for this replica volume.
 	ImagePassword *string `json:"imagePassword,omitempty"`
 }
 
@@ -37,16 +43,19 @@ type ReplicaVolumePost struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReplicaVolumePost(image string, name string, size int32, type_ VolumeHwType) *ReplicaVolumePost {
+func NewReplicaVolumePost(name string, size int32, type_ VolumeHwType, bootOrder string) *ReplicaVolumePost {
 	this := ReplicaVolumePost{}
-
-	this.Image = &image
 
 	this.Name = &name
 
 	this.Size = &size
 
 	this.Type = &type_
+
+	var bus BusType = VIRTIO
+	this.Bus = &bus
+
+	this.BootOrder = &bootOrder
 
 	return &this
 }
@@ -56,6 +65,8 @@ func NewReplicaVolumePost(image string, name string, size int32, type_ VolumeHwT
 // but it doesn't guarantee that properties required by API are set
 func NewReplicaVolumePostWithDefaults() *ReplicaVolumePost {
 	this := ReplicaVolumePost{}
+	var bus BusType = VIRTIO
+	this.Bus = &bus
 	return &this
 }
 
@@ -91,6 +102,44 @@ func (o *ReplicaVolumePost) SetImage(v string) {
 // HasImage returns a boolean if a field has been set.
 func (o *ReplicaVolumePost) HasImage() bool {
 	if o != nil && o.Image != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetImageAlias returns the ImageAlias field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ReplicaVolumePost) GetImageAlias() *string {
+	if o == nil {
+		return nil
+	}
+
+	return o.ImageAlias
+
+}
+
+// GetImageAliasOk returns a tuple with the ImageAlias field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaVolumePost) GetImageAliasOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.ImageAlias, true
+}
+
+// SetImageAlias sets field value
+func (o *ReplicaVolumePost) SetImageAlias(v string) {
+
+	o.ImageAlias = &v
+
+}
+
+// HasImageAlias returns a boolean if a field has been set.
+func (o *ReplicaVolumePost) HasImageAlias() bool {
+	if o != nil && o.ImageAlias != nil {
 		return true
 	}
 
@@ -325,6 +374,82 @@ func (o *ReplicaVolumePost) HasBus() bool {
 	return false
 }
 
+// GetBackupunitId returns the BackupunitId field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ReplicaVolumePost) GetBackupunitId() *string {
+	if o == nil {
+		return nil
+	}
+
+	return o.BackupunitId
+
+}
+
+// GetBackupunitIdOk returns a tuple with the BackupunitId field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaVolumePost) GetBackupunitIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.BackupunitId, true
+}
+
+// SetBackupunitId sets field value
+func (o *ReplicaVolumePost) SetBackupunitId(v string) {
+
+	o.BackupunitId = &v
+
+}
+
+// HasBackupunitId returns a boolean if a field has been set.
+func (o *ReplicaVolumePost) HasBackupunitId() bool {
+	if o != nil && o.BackupunitId != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetBootOrder returns the BootOrder field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ReplicaVolumePost) GetBootOrder() *string {
+	if o == nil {
+		return nil
+	}
+
+	return o.BootOrder
+
+}
+
+// GetBootOrderOk returns a tuple with the BootOrder field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaVolumePost) GetBootOrderOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.BootOrder, true
+}
+
+// SetBootOrder sets field value
+func (o *ReplicaVolumePost) SetBootOrder(v string) {
+
+	o.BootOrder = &v
+
+}
+
+// HasBootOrder returns a boolean if a field has been set.
+func (o *ReplicaVolumePost) HasBootOrder() bool {
+	if o != nil && o.BootOrder != nil {
+		return true
+	}
+
+	return false
+}
+
 // GetImagePassword returns the ImagePassword field value
 // If the value is explicit nil, the zero value for string will be returned
 func (o *ReplicaVolumePost) GetImagePassword() *string {
@@ -365,9 +490,9 @@ func (o *ReplicaVolumePost) HasImagePassword() bool {
 
 func (o ReplicaVolumePost) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Image != nil {
-		toSerialize["image"] = o.Image
-	}
+	toSerialize["image"] = o.Image
+
+	toSerialize["imageAlias"] = o.ImageAlias
 
 	if o.Name != nil {
 		toSerialize["name"] = o.Name
@@ -391,6 +516,14 @@ func (o ReplicaVolumePost) MarshalJSON() ([]byte, error) {
 
 	if o.Bus != nil {
 		toSerialize["bus"] = o.Bus
+	}
+
+	if o.BackupunitId != nil {
+		toSerialize["backupunitId"] = o.BackupunitId
+	}
+
+	if o.BootOrder != nil {
+		toSerialize["bootOrder"] = o.BootOrder
 	}
 
 	if o.ImagePassword != nil {

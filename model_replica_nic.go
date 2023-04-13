@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,12 +17,20 @@ import (
 
 // ReplicaNic struct for ReplicaNic
 type ReplicaNic struct {
-	// Lan ID for this replica Nic.
+	// The LAN ID of this replica NIC.
 	Lan *int32 `json:"lan"`
-	// Name for this replica NIC.
+	// The replica NIC name.
 	Name *string `json:"name"`
-	// Dhcp flag for this replica Nic. This is an optional attribute with default value of 'true' if not given in the request payload or given as null.
+	// DHCP for this replica NIC. This is an optional attribute with the default value 'TRUE' if not specified in the request payload or as null.
 	Dhcp *bool `json:"dhcp,omitempty"`
+	// Activate or deactivate the firewall. By default, an active firewall without any defined rules will block all incoming network traffic except for the firewall rules that explicitly allows certain protocols, IP addresses and ports.
+	FirewallActive *bool `json:"firewallActive,omitempty"`
+	// The type of firewall rules that will be allowed on the NIC. If not specified, the default INGRESS value is used.
+	FirewallType *string `json:"firewallType,omitempty"`
+	// List of all flow logs for the specified NIC.
+	FlowLogs *[]NicFlowLog `json:"flowLogs,omitempty"`
+	// List of all firewall rules for the specified NIC.
+	FirewallRules *[]NicFirewallRule `json:"firewallRules,omitempty"`
 }
 
 // NewReplicaNic instantiates a new ReplicaNic object
@@ -161,6 +169,158 @@ func (o *ReplicaNic) HasDhcp() bool {
 	return false
 }
 
+// GetFirewallActive returns the FirewallActive field value
+// If the value is explicit nil, the zero value for bool will be returned
+func (o *ReplicaNic) GetFirewallActive() *bool {
+	if o == nil {
+		return nil
+	}
+
+	return o.FirewallActive
+
+}
+
+// GetFirewallActiveOk returns a tuple with the FirewallActive field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaNic) GetFirewallActiveOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.FirewallActive, true
+}
+
+// SetFirewallActive sets field value
+func (o *ReplicaNic) SetFirewallActive(v bool) {
+
+	o.FirewallActive = &v
+
+}
+
+// HasFirewallActive returns a boolean if a field has been set.
+func (o *ReplicaNic) HasFirewallActive() bool {
+	if o != nil && o.FirewallActive != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetFirewallType returns the FirewallType field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ReplicaNic) GetFirewallType() *string {
+	if o == nil {
+		return nil
+	}
+
+	return o.FirewallType
+
+}
+
+// GetFirewallTypeOk returns a tuple with the FirewallType field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaNic) GetFirewallTypeOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.FirewallType, true
+}
+
+// SetFirewallType sets field value
+func (o *ReplicaNic) SetFirewallType(v string) {
+
+	o.FirewallType = &v
+
+}
+
+// HasFirewallType returns a boolean if a field has been set.
+func (o *ReplicaNic) HasFirewallType() bool {
+	if o != nil && o.FirewallType != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetFlowLogs returns the FlowLogs field value
+// If the value is explicit nil, the zero value for []NicFlowLog will be returned
+func (o *ReplicaNic) GetFlowLogs() *[]NicFlowLog {
+	if o == nil {
+		return nil
+	}
+
+	return o.FlowLogs
+
+}
+
+// GetFlowLogsOk returns a tuple with the FlowLogs field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaNic) GetFlowLogsOk() (*[]NicFlowLog, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.FlowLogs, true
+}
+
+// SetFlowLogs sets field value
+func (o *ReplicaNic) SetFlowLogs(v []NicFlowLog) {
+
+	o.FlowLogs = &v
+
+}
+
+// HasFlowLogs returns a boolean if a field has been set.
+func (o *ReplicaNic) HasFlowLogs() bool {
+	if o != nil && o.FlowLogs != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetFirewallRules returns the FirewallRules field value
+// If the value is explicit nil, the zero value for []NicFirewallRule will be returned
+func (o *ReplicaNic) GetFirewallRules() *[]NicFirewallRule {
+	if o == nil {
+		return nil
+	}
+
+	return o.FirewallRules
+
+}
+
+// GetFirewallRulesOk returns a tuple with the FirewallRules field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ReplicaNic) GetFirewallRulesOk() (*[]NicFirewallRule, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.FirewallRules, true
+}
+
+// SetFirewallRules sets field value
+func (o *ReplicaNic) SetFirewallRules(v []NicFirewallRule) {
+
+	o.FirewallRules = &v
+
+}
+
+// HasFirewallRules returns a boolean if a field has been set.
+func (o *ReplicaNic) HasFirewallRules() bool {
+	if o != nil && o.FirewallRules != nil {
+		return true
+	}
+
+	return false
+}
+
 func (o ReplicaNic) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if o.Lan != nil {
@@ -172,6 +332,14 @@ func (o ReplicaNic) MarshalJSON() ([]byte, error) {
 	}
 
 	toSerialize["dhcp"] = o.Dhcp
+
+	toSerialize["firewallActive"] = o.FirewallActive
+
+	toSerialize["firewallType"] = o.FirewallType
+
+	toSerialize["flowLogs"] = o.FlowLogs
+
+	toSerialize["firewallRules"] = o.FirewallRules
 
 	return json.Marshal(toSerialize)
 }

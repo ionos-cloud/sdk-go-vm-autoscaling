@@ -1,33 +1,47 @@
 # ErrorMessageParse
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**ErrorCode** | Pointer to **int** |  | [optional] |
+|**ErrorCode** | Pointer to **string** |  | [optional] |
 |**Message** | Pointer to **string** |  | [optional] |
 
 ## Methods
 
+### NewErrorMessageParse
+
+`func NewErrorMessageParse() *ErrorMessageParse`
+
+NewErrorMessageParse instantiates a new ErrorMessageParse object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewErrorMessageParseWithDefaults
+
+`func NewErrorMessageParseWithDefaults() *ErrorMessageParse`
+
+NewErrorMessageParseWithDefaults instantiates a new ErrorMessageParse object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetErrorCode
 
-`func (o *ErrorMessageParse) GetErrorCode() int`
+`func (o *ErrorMessageParse) GetErrorCode() string`
 
 GetErrorCode returns the ErrorCode field if non-nil, zero value otherwise.
 
 ### GetErrorCodeOk
 
-`func (o *ErrorMessageParse) GetErrorCodeOk() (*int, bool)`
+`func (o *ErrorMessageParse) GetErrorCodeOk() (*string, bool)`
 
 GetErrorCodeOk returns a tuple with the ErrorCode field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetErrorCode
 
-`func (o *ErrorMessageParse) SetErrorCode(v int)`
+`func (o *ErrorMessageParse) SetErrorCode(v string)`
 
 SetErrorCode sets ErrorCode field to given value.
 

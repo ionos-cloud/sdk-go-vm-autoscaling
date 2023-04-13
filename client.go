@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -19,7 +19,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httputil"
@@ -37,7 +36,7 @@ import (
 )
 
 var (
-	jsonCheck = regexp.MustCompile(`(?i:(?:application|text)\/(?:vnd\.[^;]+|problem\+)?json)`)
+	jsonCheck = regexp.MustCompile(`(?i:(?:application|text)/(?:vnd\.[^;]+\+)?json)`)
 	xmlCheck  = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
 )
 
@@ -50,18 +49,16 @@ const (
 	RequestStatusFailed  = "FAILED"
 	RequestStatusDone    = "DONE"
 
-	Version = "VERSION_PLACEHOLDER"
+	Version = "1.0.0-beta.1"
 )
 
-// APIClient manages communication with the VM Auto Scaling service (CloudAPI) API v1.0
+// APIClient manages communication with the VM Auto Scaling API API v1-SDK.1
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// API Services
-
-	DocumentationApi *DocumentationApiService
 
 	GroupsApi *GroupsApiService
 }
@@ -82,7 +79,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.DocumentationApi = (*DocumentationApiService)(&c.common)
 	c.GroupsApi = (*GroupsApiService)(&c.common)
 
 	return c
@@ -193,13 +189,14 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 			}
 		}
 
-		if c.cfg.Debug {
+		if c.cfg.Debug || c.cfg.LogLevel.Satisfies(Trace) {
 			dump, err := httputil.DumpRequestOut(clonedRequest, true)
-			if err != nil {
-				return nil, err
+			if err == nil {
+				c.cfg.Logger.Printf(" DumpRequestOut : %s\n", string(dump))
+			} else {
+				c.cfg.Logger.Printf(" DumpRequestOut err: %+v", err)
 			}
-			log.Printf("\ntry no: %d\n", retryCount)
-			log.Printf("%s\n", string(dump))
+			c.cfg.Logger.Printf("\n try no: %d\n", retryCount)
 		}
 
 		resp, err = c.cfg.HTTPClient.Do(clonedRequest)
@@ -207,12 +204,13 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 			return resp, err
 		}
 
-		if c.cfg.Debug {
+		if c.cfg.Debug || c.cfg.LogLevel.Satisfies(Trace) {
 			dump, err := httputil.DumpResponse(resp, true)
-			if err != nil {
-				return resp, err
+			if err == nil {
+				c.cfg.Logger.Printf("\n DumpResponse : %s\n", string(dump))
+			} else {
+				c.cfg.Logger.Printf(" DumpResponse err %+v", err)
 			}
-			log.Printf("\n%s\n", string(dump))
 		}
 
 		var backoffTime time.Duration
@@ -239,8 +237,8 @@ func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 		}
 
 		if retryCount >= c.GetConfig().MaxRetries {
-			if c.cfg.Debug {
-				log.Printf("number of maximum retries exceeded (%d retries)\n", c.cfg.MaxRetries)
+			if c.cfg.Debug || c.cfg.LogLevel.Satisfies(Debug) {
+				c.cfg.Logger.Printf(" Number of maximum retries exceeded (%d retries)\n", c.cfg.MaxRetries)
 			}
 			break
 		} else {
@@ -255,8 +253,8 @@ func (c *APIClient) backOff(t time.Duration) {
 	if t > c.GetConfig().MaxWaitTime {
 		t = c.GetConfig().MaxWaitTime
 	}
-	if c.cfg.Debug {
-		log.Printf("sleeping %s before retrying request\n", t.String())
+	if c.cfg.Debug || c.cfg.LogLevel.Satisfies(Debug) {
+		c.cfg.Logger.Printf(" Sleeping %s before retrying request\n", t.String())
 	}
 	time.Sleep(t)
 }
@@ -616,9 +614,24 @@ type GenericOpenAPIError struct {
 	model      interface{}
 }
 
+// NewGenericOpenAPIError - constructor for GenericOpenAPIError
+func NewGenericOpenAPIError(message string, body []byte, model interface{}, statusCode int) *GenericOpenAPIError {
+	return &GenericOpenAPIError{
+		statusCode: statusCode,
+		body:       body,
+		error:      message,
+		model:      model,
+	}
+}
+
 // Error returns non-empty string if there was an error.
 func (e GenericOpenAPIError) Error() string {
 	return e.error
+}
+
+// SetError sets the error string
+func (e *GenericOpenAPIError) SetError(error string) {
+	e.error = error
 }
 
 // Body returns the raw bytes of the response
@@ -626,11 +639,27 @@ func (e GenericOpenAPIError) Body() []byte {
 	return e.body
 }
 
+// SetBody sets the raw body of the error
+func (e *GenericOpenAPIError) SetBody(body []byte) {
+	e.body = body
+}
+
 // Model returns the unpacked model of the error
 func (e GenericOpenAPIError) Model() interface{} {
 	return e.model
 }
 
+// SetModel sets the model of the error
+func (e *GenericOpenAPIError) SetModel(model interface{}) {
+	e.model = model
+}
+
+// StatusCode returns the status code of the error
 func (e GenericOpenAPIError) StatusCode() int {
 	return e.statusCode
+}
+
+// SetStatusCode sets the status code of the error
+func (e *GenericOpenAPIError) SetStatusCode(statusCode int) {
+	e.statusCode = statusCode
 }

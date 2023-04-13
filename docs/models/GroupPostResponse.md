@@ -1,21 +1,35 @@
 # GroupPostResponse
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | The resource&#39;s unique identifier | [readonly] |
-|**Type** | Pointer to **string** | The type of object that has been created | [optional] [readonly] |
-|**Href** | Pointer to **string** | URL to the object representation (absolute path) | [optional] [readonly] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 |**Metadata** | Pointer to [**Metadata**](Metadata.md) |  | [optional] |
 |**Properties** | [**GroupProperties**](GroupProperties.md) |  | |
-|**Entities** | Pointer to [**GroupEntities**](GroupEntities.md) |  | [optional] |
-|**StartedActions** | Pointer to [**[]ActionResource**](ActionResource.md) | Any background activity caused by this request. This allows the caller to track the progress of such activity. | [optional] [readonly] |
+|**Entities** | Pointer to [**GroupPostEntities**](GroupPostEntities.md) |  | [optional] |
+|**StartedActions** | Pointer to [**[]ActionResource**](ActionResource.md) | Any background activity caused by this request. You can use this to track the progress of such activities. | [optional] [readonly] |
 
 ## Methods
 
+### NewGroupPostResponse
+
+`func NewGroupPostResponse(id string, properties GroupProperties, ) *GroupPostResponse`
+
+NewGroupPostResponse instantiates a new GroupPostResponse object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewGroupPostResponseWithDefaults
+
+`func NewGroupPostResponseWithDefaults() *GroupPostResponse`
+
+NewGroupPostResponseWithDefaults instantiates a new GroupPostResponse object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 
@@ -134,20 +148,20 @@ SetProperties sets Properties field to given value.
 
 ### GetEntities
 
-`func (o *GroupPostResponse) GetEntities() GroupEntities`
+`func (o *GroupPostResponse) GetEntities() GroupPostEntities`
 
 GetEntities returns the Entities field if non-nil, zero value otherwise.
 
 ### GetEntitiesOk
 
-`func (o *GroupPostResponse) GetEntitiesOk() (*GroupEntities, bool)`
+`func (o *GroupPostResponse) GetEntitiesOk() (*GroupPostEntities, bool)`
 
 GetEntitiesOk returns a tuple with the Entities field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEntities
 
-`func (o *GroupPostResponse) SetEntities(v GroupEntities)`
+`func (o *GroupPostResponse) SetEntities(v GroupPostEntities)`
 
 SetEntities sets Entities field to given value.
 

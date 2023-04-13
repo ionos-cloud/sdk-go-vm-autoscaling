@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,7 +17,7 @@ import (
 
 // ParseError struct for ParseError
 type ParseError struct {
-	HttpStatus *int                 `json:"httpStatus,omitempty"`
+	HttpStatus *int32               `json:"httpStatus,omitempty"`
 	Messages   *[]ErrorMessageParse `json:"messages,omitempty"`
 	ErrorUuid  *string              `json:"errorUuid,omitempty"`
 }
@@ -41,8 +41,8 @@ func NewParseErrorWithDefaults() *ParseError {
 }
 
 // GetHttpStatus returns the HttpStatus field value
-// If the value is explicit nil, the zero value for int will be returned
-func (o *ParseError) GetHttpStatus() *int {
+// If the value is explicit nil, the zero value for int32 will be returned
+func (o *ParseError) GetHttpStatus() *int32 {
 	if o == nil {
 		return nil
 	}
@@ -54,7 +54,7 @@ func (o *ParseError) GetHttpStatus() *int {
 // GetHttpStatusOk returns a tuple with the HttpStatus field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ParseError) GetHttpStatusOk() (*int, bool) {
+func (o *ParseError) GetHttpStatusOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -63,7 +63,7 @@ func (o *ParseError) GetHttpStatusOk() (*int, bool) {
 }
 
 // SetHttpStatus sets field value
-func (o *ParseError) SetHttpStatus(v int) {
+func (o *ParseError) SetHttpStatus(v int32) {
 
 	o.HttpStatus = &v
 

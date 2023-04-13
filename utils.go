@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -13,9 +13,33 @@ package ionoscloud_vm_autoscaling
 
 import (
 	"encoding/json"
+	"reflect"
 	"strings"
 	"time"
 )
+
+// ToPtr - returns a pointer to the given value.
+func ToPtr[T any](v T) *T {
+	return &v
+}
+
+// ToValue - returns the value of the pointer passed in
+func ToValue[T any](ptr *T) T {
+	return *ptr
+}
+
+// ToValueDefault - returns the value of the pointer passed in, or the default type value if the pointer is nil
+func ToValueDefault[T any](ptr *T) T {
+	var defaultVal T
+	if ptr == nil {
+		return defaultVal
+	}
+	return *ptr
+}
+
+func SliceToValueDefault[T any](ptrSlice *[]T) []T {
+	return append([]T{}, *ptrSlice...)
+}
 
 // PtrBool - returns a pointer to given boolean value.
 func PtrBool(v bool) *bool { return &v }
@@ -742,4 +766,18 @@ func (t *IonosTime) UnmarshalJSON(data []byte) error {
 	}
 	*t = IonosTime{tt}
 	return nil
+}
+
+// IsNil checks if an input is nil
+func IsNil(i interface{}) bool {
+	if i == nil {
+		return true
+	}
+	switch reflect.TypeOf(i).Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Ptr, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		return reflect.ValueOf(i).IsNil()
+	case reflect.Array:
+		return reflect.ValueOf(i).IsZero()
+	}
+	return false
 }

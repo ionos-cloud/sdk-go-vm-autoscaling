@@ -1,13 +1,9 @@
 # BusType
 
-The bus type of the volume. Default is VIRTIO. Also supported: IDE.
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|VIRTIO |
-|IDE |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 

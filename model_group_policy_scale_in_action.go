@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -15,21 +15,23 @@ import (
 	"encoding/json"
 )
 
-// GroupPolicyScaleInAction struct for GroupPolicyScaleInAction
+// GroupPolicyScaleInAction Defines the action to be taken when the 'scaleInThreshold' is exceeded. Here, scaling is always about removing VMs associated with this Auto Scaling group. By default, the termination policy is 'OLDEST_SERVER_FIRST' is effective.
 type GroupPolicyScaleInAction struct {
-	// When `amountType == ABSOLUTE`, this is the number of VMs added or removed in one step. When `amountType == PERCENTAGE`, this is a percentage value, which will be applied to the autoscaling group's current `targetReplicaCount` in order to derive the number of VMs that will be added or removed in one step. There will always be at least one VM added or removed.   For SCALE_IN operation now volumes are NOT deleted after the server deletion.
+	// 'amountType=ABSOLUTE' specifies the absolute number of VMs that are added or removed. The value must be between 1 to 10.   'amountType=PERCENTAGE' specifies the percentage value that is applied to the current 'targetReplicaCount' of the autoscaling group. The value must be between 1 to 200.   At least one VM is always added or removed.   Note that for 'SCALE_IN' operations, volumes are not deleted after the server is deleted.
 	Amount     *float32      `json:"amount"`
 	AmountType *ActionAmount `json:"amountType"`
-	// Minimum time to pass after this Scaling action has started, until the next Scaling action will be started. Additionally, if a Scaling action is currently in progress, no second Scaling action will be started for the same autoscaling group. Instead, the Metric will be re-evaluated after the current Scaling action is completed (either successfully or with failures). This is validated with a minimum value of 2 minutes and a maximum of 24 hours currently. Default value is 5 minutes if not given.
+	// The minimum time that elapses after the start of this scaling action until the next scaling action is started. With a scaling action in progress, no second scaling action is started for the same Auto Scaling group. Instead, the metric is re-evaluated after the current scaling action completes (either successfully or with errors). This is currently validated with a minimum value of 2 minutes and a maximum value of 24 hours. The default value is 5 minutes if not specified.
 	CooldownPeriod    *string                `json:"cooldownPeriod,omitempty"`
 	TerminationPolicy *TerminationPolicyType `json:"terminationPolicy,omitempty"`
+	// If set to `true`, when deleting an replica during scale in, any attached volume will also be deleted. When set to `false`, all volumes remain in the datacenter and must be deleted manually.  **Note**, that every scale-out creates new volumes. When they are not deleted, they will eventually use all of your contracts resource limits. At this point, scaling out would not be possible anymore.
+	DeleteVolumes *bool `json:"deleteVolumes"`
 }
 
 // NewGroupPolicyScaleInAction instantiates a new GroupPolicyScaleInAction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGroupPolicyScaleInAction(amount float32, amountType ActionAmount) *GroupPolicyScaleInAction {
+func NewGroupPolicyScaleInAction(amount float32, amountType ActionAmount, deleteVolumes bool) *GroupPolicyScaleInAction {
 	this := GroupPolicyScaleInAction{}
 
 	this.Amount = &amount
@@ -38,6 +40,8 @@ func NewGroupPolicyScaleInAction(amount float32, amountType ActionAmount) *Group
 
 	var cooldownPeriod string = "5m"
 	this.CooldownPeriod = &cooldownPeriod
+
+	this.DeleteVolumes = &deleteVolumes
 
 	return &this
 }
@@ -204,6 +208,44 @@ func (o *GroupPolicyScaleInAction) HasTerminationPolicy() bool {
 	return false
 }
 
+// GetDeleteVolumes returns the DeleteVolumes field value
+// If the value is explicit nil, the zero value for bool will be returned
+func (o *GroupPolicyScaleInAction) GetDeleteVolumes() *bool {
+	if o == nil {
+		return nil
+	}
+
+	return o.DeleteVolumes
+
+}
+
+// GetDeleteVolumesOk returns a tuple with the DeleteVolumes field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GroupPolicyScaleInAction) GetDeleteVolumesOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.DeleteVolumes, true
+}
+
+// SetDeleteVolumes sets field value
+func (o *GroupPolicyScaleInAction) SetDeleteVolumes(v bool) {
+
+	o.DeleteVolumes = &v
+
+}
+
+// HasDeleteVolumes returns a boolean if a field has been set.
+func (o *GroupPolicyScaleInAction) HasDeleteVolumes() bool {
+	if o != nil && o.DeleteVolumes != nil {
+		return true
+	}
+
+	return false
+}
+
 func (o GroupPolicyScaleInAction) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if o.Amount != nil {
@@ -216,8 +258,10 @@ func (o GroupPolicyScaleInAction) MarshalJSON() ([]byte, error) {
 
 	toSerialize["cooldownPeriod"] = o.CooldownPeriod
 
-	if o.TerminationPolicy != nil {
-		toSerialize["terminationPolicy"] = o.TerminationPolicy
+	toSerialize["terminationPolicy"] = o.TerminationPolicy
+
+	if o.DeleteVolumes != nil {
+		toSerialize["deleteVolumes"] = o.DeleteVolumes
 	}
 
 	return json.Marshal(toSerialize)

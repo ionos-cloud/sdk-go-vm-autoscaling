@@ -1,23 +1,36 @@
 # Metadata
 
-Metadata about the resource
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
 |**CreatedBy** | **string** | The user who created the resource. | |
-|**CreatedByUserId** | **string** | The user who created the resource. | |
-|**CreatedDate** | [**time.Time**](time.Time.md) | When the resource was created. | |
-|**Etag** | **string** | Resource etag | |
+|**CreatedByUserId** | **string** | The ID of the user who created the resource. | |
+|**CreatedDate** | [**time.Time**](time.Time.md) | The date the resource was created. | |
+|**Etag** | **string** | The resource etag. | |
 |**LastModifiedBy** | **string** | The last user who modified the resource. | |
-|**LastModifiedByUserId** | **string** | The last user who modified the resource. | |
-|**LastModifiedDate** | [**time.Time**](time.Time.md) | When the resource was last modified. | |
+|**LastModifiedByUserId** | **string** | The ID of the last user who modified the resource. | |
+|**LastModifiedDate** | [**time.Time**](time.Time.md) | The date the resource was last modified. | |
 |**State** | [**MetadataState**](MetadataState.md) |  | |
 
 ## Methods
 
+### NewMetadata
+
+`func NewMetadata(createdBy string, createdByUserId string, createdDate time.Time, etag string, lastModifiedBy string, lastModifiedByUserId string, lastModifiedDate time.Time, state MetadataState, ) *Metadata`
+
+NewMetadata instantiates a new Metadata object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewMetadataWithDefaults
+
+`func NewMetadataWithDefaults() *Metadata`
+
+NewMetadataWithDefaults instantiates a new Metadata object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetCreatedBy
 

@@ -1,19 +1,32 @@
 # MetadataBasic
 
-Metadata about the resource
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**CreatedDate** | [**time.Time**](time.Time.md) | When the resource was created. | |
-|**Etag** | **string** | Resource etag | |
-|**LastModifiedDate** | [**time.Time**](time.Time.md) | When the resource was last modified. | |
-|**State** | [**MetadataState**](MetadataState.md) |  | |
+|**CreatedDate** | [**time.Time**](time.Time.md) | The date the resource was created. | |
+|**Etag** | **string** | The resource etag. | |
+|**LastModifiedDate** | [**time.Time**](time.Time.md) | The date the resource was last modified. | |
+|**State** | **string** | The resource state. | |
 
 ## Methods
 
+### NewMetadataBasic
+
+`func NewMetadataBasic(createdDate time.Time, etag string, lastModifiedDate time.Time, state string, ) *MetadataBasic`
+
+NewMetadataBasic instantiates a new MetadataBasic object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewMetadataBasicWithDefaults
+
+`func NewMetadataBasicWithDefaults() *MetadataBasic`
+
+NewMetadataBasicWithDefaults instantiates a new MetadataBasic object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetCreatedDate
 
@@ -77,20 +90,20 @@ SetLastModifiedDate sets LastModifiedDate field to given value.
 
 ### GetState
 
-`func (o *MetadataBasic) GetState() MetadataState`
+`func (o *MetadataBasic) GetState() string`
 
 GetState returns the State field if non-nil, zero value otherwise.
 
 ### GetStateOk
 
-`func (o *MetadataBasic) GetStateOk() (*MetadataState, bool)`
+`func (o *MetadataBasic) GetStateOk() (*string, bool)`
 
 GetStateOk returns a tuple with the State field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetState
 
-`func (o *MetadataBasic) SetState(v MetadataState)`
+`func (o *MetadataBasic) SetState(v string)`
 
 SetState sets State field to given value.
 

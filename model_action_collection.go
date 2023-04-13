@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,13 +17,13 @@ import (
 
 // ActionCollection struct for ActionCollection
 type ActionCollection struct {
-	// The resource's unique identifier
+	// The unique resource identifier.
 	Id *string `json:"id"`
-	// The type of object that has been created
+	// The resource type.
 	Type *string `json:"type,omitempty"`
-	// URL to the object representation (absolute path)
-	Href  *string   `json:"href,omitempty"`
-	Items *[]Action `json:"items,omitempty"`
+	// The absolute URL to the resource's representation.
+	Href  *string           `json:"href,omitempty"`
+	Items *[]ActionResource `json:"items,omitempty"`
 }
 
 // NewActionCollection instantiates a new ActionCollection object
@@ -161,8 +161,8 @@ func (o *ActionCollection) HasHref() bool {
 }
 
 // GetItems returns the Items field value
-// If the value is explicit nil, the zero value for []Action will be returned
-func (o *ActionCollection) GetItems() *[]Action {
+// If the value is explicit nil, the zero value for []ActionResource will be returned
+func (o *ActionCollection) GetItems() *[]ActionResource {
 	if o == nil {
 		return nil
 	}
@@ -174,7 +174,7 @@ func (o *ActionCollection) GetItems() *[]Action {
 // GetItemsOk returns a tuple with the Items field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ActionCollection) GetItemsOk() (*[]Action, bool) {
+func (o *ActionCollection) GetItemsOk() (*[]ActionResource, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -183,7 +183,7 @@ func (o *ActionCollection) GetItemsOk() (*[]Action, bool) {
 }
 
 // SetItems sets field value
-func (o *ActionCollection) SetItems(v []Action) {
+func (o *ActionCollection) SetItems(v []ActionResource) {
 
 	o.Items = &v
 

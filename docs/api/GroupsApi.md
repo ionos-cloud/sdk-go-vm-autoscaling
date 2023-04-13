@@ -1,30 +1,30 @@
 # \GroupsApi
 
-All URIs are relative to *https://api.ionos.com*
+All URIs are relative to *https://api.ionos.com/cloudapi/autoscaling*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**AutoscalingGroupsActionsFindById**](GroupsApi.md#AutoscalingGroupsActionsFindById) | **Get** /cloudapi/autoscaling/groups/{groupId}/actions/{actionId} | Retrieve action details|
-|[**AutoscalingGroupsActionsGet**](GroupsApi.md#AutoscalingGroupsActionsGet) | **Get** /cloudapi/autoscaling/groups/{groupId}/actions | Retrieve last ten actions|
-|[**AutoscalingGroupsDelete**](GroupsApi.md#AutoscalingGroupsDelete) | **Delete** /cloudapi/autoscaling/groups/{groupId} | Delete autoscaling groups.|
-|[**AutoscalingGroupsFindById**](GroupsApi.md#AutoscalingGroupsFindById) | **Get** /cloudapi/autoscaling/groups/{groupId} | Retrieve autoscaling groups by UUID|
-|[**AutoscalingGroupsGet**](GroupsApi.md#AutoscalingGroupsGet) | **Get** /cloudapi/autoscaling/groups | List autoscaling groups|
-|[**AutoscalingGroupsPost**](GroupsApi.md#AutoscalingGroupsPost) | **Post** /cloudapi/autoscaling/groups | Create autoscaling groups|
-|[**AutoscalingGroupsPut**](GroupsApi.md#AutoscalingGroupsPut) | **Put** /cloudapi/autoscaling/groups/{groupId} | Update autoscaling groups|
-|[**AutoscalingGroupsServersFindById**](GroupsApi.md#AutoscalingGroupsServersFindById) | **Get** /cloudapi/autoscaling/groups/{groupId}/servers/{serverId} | Retrieve group servers by UUID|
-|[**AutoscalingGroupsServersGet**](GroupsApi.md#AutoscalingGroupsServersGet) | **Get** /cloudapi/autoscaling/groups/{groupId}/servers | Retrieve autoscaling group servers|
+|[**GroupsActionsFindById**](GroupsApi.md#GroupsActionsFindById) | **Get** /groups/{groupId}/actions/{actionId} | Get Scaling Action Details by ID|
+|[**GroupsActionsGet**](GroupsApi.md#GroupsActionsGet) | **Get** /groups/{groupId}/actions | Get Scaling Actions|
+|[**GroupsDelete**](GroupsApi.md#GroupsDelete) | **Delete** /groups/{groupId} | Delete an Auto Scaling Group by ID|
+|[**GroupsFindById**](GroupsApi.md#GroupsFindById) | **Get** /groups/{groupId} | Get an Auto Scaling by ID|
+|[**GroupsGet**](GroupsApi.md#GroupsGet) | **Get** /groups | Get Auto Scaling Groups|
+|[**GroupsPost**](GroupsApi.md#GroupsPost) | **Post** /groups | Create an Auto Scaling Group|
+|[**GroupsPut**](GroupsApi.md#GroupsPut) | **Put** /groups/{groupId} | Update an Auto Scaling Group by ID|
+|[**GroupsServersFindById**](GroupsApi.md#GroupsServersFindById) | **Get** /groups/{groupId}/servers/{serverId} | Get Auto Scaling Group Server by ID|
+|[**GroupsServersGet**](GroupsApi.md#GroupsServersGet) | **Get** /groups/{groupId}/servers | Get Auto Scaling Group Servers|
 
 
 
-## AutoscalingGroupsActionsFindById
+## GroupsActionsFindById
 
 ```go
-var result Action = AutoscalingGroupsActionsFindById(ctx, actionId, groupId)
+var result Action = GroupsActionsFindById(ctx, actionId, groupId)
                       .Depth(depth)
                       .Execute()
 ```
 
-Retrieve action details
+Get Scaling Action Details by ID
 
 
 
@@ -44,17 +44,17 @@ import (
 func main() {
     actionId := TODO // string | 
     groupId := "groupId_example" // string | 
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsActionsFindById(context.Background(), actionId, groupId).Depth(depth).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsActionsFindById(context.Background(), actionId, groupId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsActionsFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsActionsFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsActionsFindById`: Action
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsActionsFindById`: %v\n", resource)
+    // response from `GroupsActionsFindById`: Action
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsActionsFindById`: %v\n", resource)
 }
 ```
 
@@ -64,21 +64,21 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**actionId** | [**string**](.md) |  | |
+|**actionId** | [**string**](../models/.md) |  | |
 |**groupId** | **string** |  | |
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsActionsFindByIdRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsActionsFindByIdRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
 
 ### Return type
 
-[**Action**](Action.md)
+[**Action**](../models/Action.md)
 
 ### HTTP request headers
 
@@ -87,16 +87,16 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsActionsF
 
 
 
-## AutoscalingGroupsActionsGet
+## GroupsActionsGet
 
 ```go
-var result ActionCollection = AutoscalingGroupsActionsGet(ctx, groupId)
+var result ActionCollection = GroupsActionsGet(ctx, groupId)
                       .Depth(depth)
                       .OrderBy(orderBy)
                       .Execute()
 ```
 
-Retrieve last ten actions
+Get Scaling Actions
 
 
 
@@ -115,18 +115,18 @@ import (
 
 func main() {
     groupId := "groupId_example" // string | 
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
-    orderBy := "orderBy_example" // string | Define the property to be used for ordering the returned list; valid values are 'createdDate' and 'lastModifiedDate'. (optional) (default to "createdDate")
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
+    orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsActionsGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsActionsGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsActionsGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsActionsGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsActionsGet`: ActionCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsActionsGet`: %v\n", resource)
+    // response from `GroupsActionsGet`: ActionCollection
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsActionsGet`: %v\n", resource)
 }
 ```
 
@@ -140,17 +140,17 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsActionsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsActionsGetRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
-| **orderBy** | **string** | Define the property to be used for ordering the returned list; valid values are &#39;createdDate&#39; and &#39;lastModifiedDate&#39;. | [default to &quot;createdDate&quot;]|
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
+| **orderBy** | **string** | Use this parameter to specify by which the returned list should be sorted. Valid values are: &#x60;&#x60;createdDate&#x60;&#x60; and &#x60;&#x60;lastModifiedDate&#x60;&#x60;. | [default to &quot;createdDate&quot;]|
 
 ### Return type
 
-[**ActionCollection**](ActionCollection.md)
+[**ActionCollection**](../models/ActionCollection.md)
 
 ### HTTP request headers
 
@@ -159,14 +159,14 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsActionsG
 
 
 
-## AutoscalingGroupsDelete
+## GroupsDelete
 
 ```go
-var result  = AutoscalingGroupsDelete(ctx, groupId)
+var result  = GroupsDelete(ctx, groupId)
                       .Execute()
 ```
 
-Delete autoscaling groups.
+Delete an Auto Scaling Group by ID
 
 
 
@@ -188,9 +188,9 @@ func main() {
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsDelete(context.Background(), groupId).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsDelete(context.Background(), groupId).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsDelete``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsDelete``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
 }
@@ -202,11 +202,11 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**groupId** | [**string**](.md) |  | |
+|**groupId** | [**string**](../models/.md) |  | |
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsDeleteRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsDeleteRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
@@ -223,15 +223,15 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsDeleteRe
 
 
 
-## AutoscalingGroupsFindById
+## GroupsFindById
 
 ```go
-var result Group = AutoscalingGroupsFindById(ctx, groupId)
+var result Group = GroupsFindById(ctx, groupId)
                       .Depth(depth)
                       .Execute()
 ```
 
-Retrieve autoscaling groups by UUID
+Get an Auto Scaling by ID
 
 
 
@@ -250,17 +250,17 @@ import (
 
 func main() {
     groupId := "groupId_example" // string | 
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsFindById(context.Background(), groupId).Depth(depth).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsFindById(context.Background(), groupId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsFindById`: Group
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsFindById`: %v\n", resource)
+    // response from `GroupsFindById`: Group
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsFindById`: %v\n", resource)
 }
 ```
 
@@ -274,16 +274,16 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsFindByIdRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsFindByIdRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
 
 ### Return type
 
-[**Group**](Group.md)
+[**Group**](../models/Group.md)
 
 ### HTTP request headers
 
@@ -292,16 +292,16 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsFindById
 
 
 
-## AutoscalingGroupsGet
+## GroupsGet
 
 ```go
-var result GroupCollection = AutoscalingGroupsGet(ctx)
+var result GroupCollection = GroupsGet(ctx)
                       .Depth(depth)
                       .OrderBy(orderBy)
                       .Execute()
 ```
 
-List autoscaling groups
+Get Auto Scaling Groups
 
 
 
@@ -319,18 +319,18 @@ import (
 )
 
 func main() {
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
-    orderBy := "orderBy_example" // string | Define the property to be used for ordering the returned list; valid values are 'createdDate' and 'lastModifiedDate'. (optional) (default to "createdDate")
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
+    orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsGet(context.Background()).Depth(depth).OrderBy(orderBy).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsGet(context.Background()).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsGet`: GroupCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsGet`: %v\n", resource)
+    // response from `GroupsGet`: GroupCollection
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsGet`: %v\n", resource)
 }
 ```
 
@@ -340,17 +340,17 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsGetRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
-| **orderBy** | **string** | Define the property to be used for ordering the returned list; valid values are &#39;createdDate&#39; and &#39;lastModifiedDate&#39;. | [default to &quot;createdDate&quot;]|
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
+| **orderBy** | **string** | Use this parameter to specify by which the returned list should be sorted. Valid values are: &#x60;&#x60;createdDate&#x60;&#x60; and &#x60;&#x60;lastModifiedDate&#x60;&#x60;. | [default to &quot;createdDate&quot;]|
 
 ### Return type
 
-[**GroupCollection**](GroupCollection.md)
+[**GroupCollection**](../models/GroupCollection.md)
 
 ### HTTP request headers
 
@@ -359,15 +359,15 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsGetReque
 
 
 
-## AutoscalingGroupsPost
+## GroupsPost
 
 ```go
-var result GroupPostResponse = AutoscalingGroupsPost(ctx)
-                      .Group(group)
+var result GroupPostResponse = GroupsPost(ctx)
+                      .GroupPost(groupPost)
                       .Execute()
 ```
 
-Create autoscaling groups
+Create an Auto Scaling Group
 
 
 
@@ -385,17 +385,17 @@ import (
 )
 
 func main() {
-    group := *openapiclient.NewGroup("1d67ca27-d4c0-419d-9a64-9ea42dfdd036", *openapiclient.NewGroupProperties("de/txl")) // Group | 
+    groupPost := *openapiclient.NewGroupPost("1d67ca27-d4c0-419d-9a64-9ea42dfdd036", *openapiclient.NewGroupProperties("de/txl")) // GroupPost | 
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsPost(context.Background()).Group(group).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsPost(context.Background()).GroupPost(groupPost).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsPost``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsPost``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsPost`: GroupPostResponse
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsPost`: %v\n", resource)
+    // response from `GroupsPost`: GroupPostResponse
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsPost`: %v\n", resource)
 }
 ```
 
@@ -405,16 +405,16 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsPostRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsPostRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **group** | [**Group**](Group.md) |  | |
+| **groupPost** | [**GroupPost**](../models/GroupPost.md) |  | |
 
 ### Return type
 
-[**GroupPostResponse**](GroupPostResponse.md)
+[**GroupPostResponse**](../models/GroupPostResponse.md)
 
 ### HTTP request headers
 
@@ -423,15 +423,15 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsPostRequ
 
 
 
-## AutoscalingGroupsPut
+## GroupsPut
 
 ```go
-var result Group = AutoscalingGroupsPut(ctx, groupId)
-                      .GroupUpdate(groupUpdate)
+var result Group = GroupsPut(ctx, groupId)
+                      .GroupPut(groupPut)
                       .Execute()
 ```
 
-Update autoscaling groups
+Update an Auto Scaling Group by ID
 
 
 
@@ -450,17 +450,17 @@ import (
 
 func main() {
     groupId := TODO // string | 
-    groupUpdate := *openapiclient.NewGroupUpdate(*openapiclient.NewGroupUpdatableProperties()) // GroupUpdate | 
+    groupPut := *openapiclient.NewGroupPut(*openapiclient.NewGroupPutProperties("de/txl", int64(10), int64(1), "Autoscaling Group #1", *openapiclient.NewGroupPolicy(openapiclient.Metric("INSTANCE_CPU_UTILIZATION_AVERAGE"), *openapiclient.NewGroupPolicyScaleInAction(float32(1), openapiclient.ActionAmount("ABSOLUTE"), true), float32(33), *openapiclient.NewGroupPolicyScaleOutAction(float32(1), openapiclient.ActionAmount("ABSOLUTE")), float32(77), openapiclient.QueryUnit("PER_HOUR")), *openapiclient.NewReplicaPropertiesPost(int32(2), int32(2048)))) // GroupPut | 
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsPut(context.Background(), groupId).GroupUpdate(groupUpdate).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsPut(context.Background(), groupId).GroupPut(groupPut).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsPut``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsPut``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsPut`: Group
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsPut`: %v\n", resource)
+    // response from `GroupsPut`: Group
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsPut`: %v\n", resource)
 }
 ```
 
@@ -470,20 +470,20 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**groupId** | [**string**](.md) |  | |
+|**groupId** | [**string**](../models/.md) |  | |
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsPutRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsPutRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **groupUpdate** | [**GroupUpdate**](GroupUpdate.md) |  | |
+| **groupPut** | [**GroupPut**](../models/GroupPut.md) |  | |
 
 ### Return type
 
-[**Group**](Group.md)
+[**Group**](../models/Group.md)
 
 ### HTTP request headers
 
@@ -492,15 +492,15 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsPutReque
 
 
 
-## AutoscalingGroupsServersFindById
+## GroupsServersFindById
 
 ```go
-var result Server = AutoscalingGroupsServersFindById(ctx, groupId, serverId)
+var result Server = GroupsServersFindById(ctx, groupId, serverId)
                       .Depth(depth)
                       .Execute()
 ```
 
-Retrieve group servers by UUID
+Get Auto Scaling Group Server by ID
 
 
 
@@ -520,17 +520,17 @@ import (
 func main() {
     groupId := "groupId_example" // string | 
     serverId := TODO // string | 
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsServersFindById(context.Background(), groupId, serverId).Depth(depth).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsServersFindById(context.Background(), groupId, serverId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsServersFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsServersFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsServersFindById`: Server
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsServersFindById`: %v\n", resource)
+    // response from `GroupsServersFindById`: Server
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsServersFindById`: %v\n", resource)
 }
 ```
 
@@ -541,20 +541,20 @@ func main() {
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
 |**groupId** | **string** |  | |
-|**serverId** | [**string**](.md) |  | |
+|**serverId** | [**string**](../models/.md) |  | |
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsServersFindByIdRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsServersFindByIdRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
 
 ### Return type
 
-[**Server**](Server.md)
+[**Server**](../models/Server.md)
 
 ### HTTP request headers
 
@@ -563,16 +563,16 @@ Other parameters are passed through a pointer to an apiAutoscalingGroupsServersF
 
 
 
-## AutoscalingGroupsServersGet
+## GroupsServersGet
 
 ```go
-var result ServerCollection = AutoscalingGroupsServersGet(ctx, groupId)
+var result ServerCollection = GroupsServersGet(ctx, groupId)
                       .Depth(depth)
                       .OrderBy(orderBy)
                       .Execute()
 ```
 
-Retrieve autoscaling group servers
+Get Auto Scaling Group Servers
 
 
 
@@ -591,18 +591,18 @@ import (
 
 func main() {
     groupId := "groupId_example" // string | 
-    depth := float32(8.14) // float32 | Controls the detail depth of the response objects.    - depth=0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth=1: Direct properties and children references are included.    - depth=2: Direct properties and children properties are included.    - depth=3: Direct properties and children properties and children's children are included.    - depth=... and so on   (optional)
-    orderBy := "orderBy_example" // string | Define the property to be used for ordering the returned list; valid values are 'createdDate' and 'lastModifiedDate'. (optional) (default to "createdDate")
+    depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
+    orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
     configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
     apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.AutoscalingGroupsServersGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
+    resource, resp, err := apiClient.GroupsApi.GroupsServersGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.AutoscalingGroupsServersGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsServersGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
-    // response from `AutoscalingGroupsServersGet`: ServerCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.AutoscalingGroupsServersGet`: %v\n", resource)
+    // response from `GroupsServersGet`: ServerCollection
+    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsServersGet`: %v\n", resource)
 }
 ```
 
@@ -616,17 +616,17 @@ func main() {
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to an apiAutoscalingGroupsServersGetRequest struct via the builder pattern
+Other parameters are passed through a pointer to an apiGroupsServersGetRequest struct via the builder pattern
 
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **depth** | **float32** | Controls the detail depth of the response objects.    - depth&#x3D;0: Only direct properties are included; children (such as executions or transitions) are not included.    - depth&#x3D;1: Direct properties and children references are included.    - depth&#x3D;2: Direct properties and children properties are included.    - depth&#x3D;3: Direct properties and children properties and children&#39;s children are included.    - depth&#x3D;... and so on   | |
-| **orderBy** | **string** | Define the property to be used for ordering the returned list; valid values are &#39;createdDate&#39; and &#39;lastModifiedDate&#39;. | [default to &quot;createdDate&quot;]|
+| **depth** | **float32** | With this parameter, you control the level of detail of the response objects:    - &#x60;&#x60;0&#x60;&#x60;: Only direct properties are included; children (such as executions or transitions) are not considered.    - &#x60;&#x60;1&#x60;&#x60;: Direct properties and children references are included.    - &#x60;&#x60;2&#x60;&#x60;: Direct properties and children properties are included.    - &#x60;&#x60;3&#x60;&#x60;: Direct properties and children properties and children&#39;s children are included.    - etc.   | |
+| **orderBy** | **string** | Use this parameter to specify by which the returned list should be sorted. Valid values are: &#x60;&#x60;createdDate&#x60;&#x60; and &#x60;&#x60;lastModifiedDate&#x60;&#x60;. | [default to &quot;createdDate&quot;]|
 
 ### Return type
 
-[**ServerCollection**](ServerCollection.md)
+[**ServerCollection**](../models/ServerCollection.md)
 
 ### HTTP request headers
 

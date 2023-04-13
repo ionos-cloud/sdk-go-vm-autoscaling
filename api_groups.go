@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -28,7 +28,7 @@ var (
 // GroupsApiService GroupsApi service
 type GroupsApiService service
 
-type ApiAutoscalingGroupsActionsFindByIdRequest struct {
+type ApiGroupsActionsFindByIdRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	actionId   string
@@ -36,25 +36,25 @@ type ApiAutoscalingGroupsActionsFindByIdRequest struct {
 	depth      *float32
 }
 
-func (r ApiAutoscalingGroupsActionsFindByIdRequest) Depth(depth float32) ApiAutoscalingGroupsActionsFindByIdRequest {
+func (r ApiGroupsActionsFindByIdRequest) Depth(depth float32) ApiGroupsActionsFindByIdRequest {
 	r.depth = &depth
 	return r
 }
 
-func (r ApiAutoscalingGroupsActionsFindByIdRequest) Execute() (Action, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsActionsFindByIdExecute(r)
+func (r ApiGroupsActionsFindByIdRequest) Execute() (Action, *APIResponse, error) {
+	return r.ApiService.GroupsActionsFindByIdExecute(r)
 }
 
 /*
- * AutoscalingGroupsActionsFindById Retrieve action details
- * Retrieve the details, such as metadata, properties, and the current status, for the specified action.
+ * GroupsActionsFindById Get Scaling Action Details by ID
+ * Retrieves the details of a scaling action specified by its ID. This operation returns metadata, properties, and the current status, for the specified scaling action
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param actionId
  * @param groupId
- * @return ApiAutoscalingGroupsActionsFindByIdRequest
+ * @return ApiGroupsActionsFindByIdRequest
  */
-func (a *GroupsApiService) AutoscalingGroupsActionsFindById(ctx _context.Context, actionId string, groupId string) ApiAutoscalingGroupsActionsFindByIdRequest {
-	return ApiAutoscalingGroupsActionsFindByIdRequest{
+func (a *GroupsApiService) GroupsActionsFindById(ctx _context.Context, actionId string, groupId string) ApiGroupsActionsFindByIdRequest {
+	return ApiGroupsActionsFindByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
 		actionId:   actionId,
@@ -66,7 +66,7 @@ func (a *GroupsApiService) AutoscalingGroupsActionsFindById(ctx _context.Context
  * Execute executes the request
  * @return Action
  */
-func (a *GroupsApiService) AutoscalingGroupsActionsFindByIdExecute(r ApiAutoscalingGroupsActionsFindByIdRequest) (Action, *APIResponse, error) {
+func (a *GroupsApiService) GroupsActionsFindByIdExecute(r ApiGroupsActionsFindByIdRequest) (Action, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -76,12 +76,12 @@ func (a *GroupsApiService) AutoscalingGroupsActionsFindByIdExecute(r ApiAutoscal
 		localVarReturnValue  Action
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsActionsFindById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsActionsFindById")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}/actions/{actionId}"
+	localVarPath := localBasePath + "/groups/{groupId}/actions/{actionId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"actionId"+"}", _neturl.PathEscape(parameterToString(r.actionId, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
@@ -134,7 +134,7 @@ func (a *GroupsApiService) AutoscalingGroupsActionsFindByIdExecute(r ApiAutoscal
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsActionsFindById",
+		Operation:  "GroupsActionsFindById",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -197,7 +197,7 @@ func (a *GroupsApiService) AutoscalingGroupsActionsFindByIdExecute(r ApiAutoscal
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsActionsGetRequest struct {
+type ApiGroupsActionsGetRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	groupId    string
@@ -205,28 +205,30 @@ type ApiAutoscalingGroupsActionsGetRequest struct {
 	orderBy    *string
 }
 
-func (r ApiAutoscalingGroupsActionsGetRequest) Depth(depth float32) ApiAutoscalingGroupsActionsGetRequest {
+func (r ApiGroupsActionsGetRequest) Depth(depth float32) ApiGroupsActionsGetRequest {
 	r.depth = &depth
 	return r
 }
-func (r ApiAutoscalingGroupsActionsGetRequest) OrderBy(orderBy string) ApiAutoscalingGroupsActionsGetRequest {
+func (r ApiGroupsActionsGetRequest) OrderBy(orderBy string) ApiGroupsActionsGetRequest {
 	r.orderBy = &orderBy
 	return r
 }
 
-func (r ApiAutoscalingGroupsActionsGetRequest) Execute() (ActionCollection, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsActionsGetExecute(r)
+func (r ApiGroupsActionsGetRequest) Execute() (ActionCollection, *APIResponse, error) {
+	return r.ApiService.GroupsActionsGetExecute(r)
 }
 
 /*
- * AutoscalingGroupsActionsGet Retrieve last ten actions
- * Retrieve the scaling actions for the specified autoscaling group; presently, only the last ten actions are returned.
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param groupId
- * @return ApiAutoscalingGroupsActionsGetRequest
- */
-func (a *GroupsApiService) AutoscalingGroupsActionsGet(ctx _context.Context, groupId string) ApiAutoscalingGroupsActionsGetRequest {
-	return ApiAutoscalingGroupsActionsGetRequest{
+* GroupsActionsGet Get Scaling Actions
+* Retrieves the list of the scaling actions for the Auto Scaling group specified by its ID.
+
+>Note that currently, only the last ten actions are returned.
+* @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+* @param groupId
+* @return ApiGroupsActionsGetRequest
+*/
+func (a *GroupsApiService) GroupsActionsGet(ctx _context.Context, groupId string) ApiGroupsActionsGetRequest {
+	return ApiGroupsActionsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -237,7 +239,7 @@ func (a *GroupsApiService) AutoscalingGroupsActionsGet(ctx _context.Context, gro
  * Execute executes the request
  * @return ActionCollection
  */
-func (a *GroupsApiService) AutoscalingGroupsActionsGetExecute(r ApiAutoscalingGroupsActionsGetRequest) (ActionCollection, *APIResponse, error) {
+func (a *GroupsApiService) GroupsActionsGetExecute(r ApiGroupsActionsGetRequest) (ActionCollection, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -247,12 +249,12 @@ func (a *GroupsApiService) AutoscalingGroupsActionsGetExecute(r ApiAutoscalingGr
 		localVarReturnValue  ActionCollection
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsActionsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsActionsGet")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}/actions"
+	localVarPath := localBasePath + "/groups/{groupId}/actions"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -307,7 +309,7 @@ func (a *GroupsApiService) AutoscalingGroupsActionsGetExecute(r ApiAutoscalingGr
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsActionsGet",
+		Operation:  "GroupsActionsGet",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -370,25 +372,27 @@ func (a *GroupsApiService) AutoscalingGroupsActionsGetExecute(r ApiAutoscalingGr
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsDeleteRequest struct {
+type ApiGroupsDeleteRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	groupId    string
 }
 
-func (r ApiAutoscalingGroupsDeleteRequest) Execute() (*APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsDeleteExecute(r)
+func (r ApiGroupsDeleteRequest) Execute() (*APIResponse, error) {
+	return r.ApiService.GroupsDeleteExecute(r)
 }
 
 /*
- * AutoscalingGroupsDelete Delete autoscaling groups.
- * Delete the specified autoscaling group; deletion of the associated servers and volumes is presently not implemented.
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param groupId
- * @return ApiAutoscalingGroupsDeleteRequest
- */
-func (a *GroupsApiService) AutoscalingGroupsDelete(ctx _context.Context, groupId string) ApiAutoscalingGroupsDeleteRequest {
-	return ApiAutoscalingGroupsDeleteRequest{
+  - GroupsDelete Delete an Auto Scaling Group by ID
+  - Deletes the Auto Scaling group specified by its ID.
+
+>Deleting the associated servers and disks is currently not implemented.
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param groupId
+  - @return ApiGroupsDeleteRequest
+*/
+func (a *GroupsApiService) GroupsDelete(ctx _context.Context, groupId string) ApiGroupsDeleteRequest {
+	return ApiGroupsDeleteRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -398,7 +402,7 @@ func (a *GroupsApiService) AutoscalingGroupsDelete(ctx _context.Context, groupId
 /*
  * Execute executes the request
  */
-func (a *GroupsApiService) AutoscalingGroupsDeleteExecute(r ApiAutoscalingGroupsDeleteRequest) (*APIResponse, error) {
+func (a *GroupsApiService) GroupsDeleteExecute(r ApiGroupsDeleteRequest) (*APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -407,12 +411,12 @@ func (a *GroupsApiService) AutoscalingGroupsDeleteExecute(r ApiAutoscalingGroups
 		localVarFileBytes    []byte
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsDelete")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsDelete")
 	if err != nil {
 		return nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}"
+	localVarPath := localBasePath + "/groups/{groupId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -461,7 +465,7 @@ func (a *GroupsApiService) AutoscalingGroupsDeleteExecute(r ApiAutoscalingGroups
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsDelete",
+		Operation:  "GroupsDelete",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -514,31 +518,31 @@ func (a *GroupsApiService) AutoscalingGroupsDeleteExecute(r ApiAutoscalingGroups
 	return localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsFindByIdRequest struct {
+type ApiGroupsFindByIdRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	groupId    string
 	depth      *float32
 }
 
-func (r ApiAutoscalingGroupsFindByIdRequest) Depth(depth float32) ApiAutoscalingGroupsFindByIdRequest {
+func (r ApiGroupsFindByIdRequest) Depth(depth float32) ApiGroupsFindByIdRequest {
 	r.depth = &depth
 	return r
 }
 
-func (r ApiAutoscalingGroupsFindByIdRequest) Execute() (Group, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsFindByIdExecute(r)
+func (r ApiGroupsFindByIdRequest) Execute() (Group, *APIResponse, error) {
+	return r.ApiService.GroupsFindByIdExecute(r)
 }
 
 /*
- * AutoscalingGroupsFindById Retrieve autoscaling groups by UUID
- * Retrieve the details for the autoscaling group with the specified UUID.
+ * GroupsFindById Get an Auto Scaling by ID
+ * Retrieves the Auto Scaling group specified by its ID including the details.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param groupId
- * @return ApiAutoscalingGroupsFindByIdRequest
+ * @return ApiGroupsFindByIdRequest
  */
-func (a *GroupsApiService) AutoscalingGroupsFindById(ctx _context.Context, groupId string) ApiAutoscalingGroupsFindByIdRequest {
-	return ApiAutoscalingGroupsFindByIdRequest{
+func (a *GroupsApiService) GroupsFindById(ctx _context.Context, groupId string) ApiGroupsFindByIdRequest {
+	return ApiGroupsFindByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -549,7 +553,7 @@ func (a *GroupsApiService) AutoscalingGroupsFindById(ctx _context.Context, group
  * Execute executes the request
  * @return Group
  */
-func (a *GroupsApiService) AutoscalingGroupsFindByIdExecute(r ApiAutoscalingGroupsFindByIdRequest) (Group, *APIResponse, error) {
+func (a *GroupsApiService) GroupsFindByIdExecute(r ApiGroupsFindByIdRequest) (Group, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -559,12 +563,12 @@ func (a *GroupsApiService) AutoscalingGroupsFindByIdExecute(r ApiAutoscalingGrou
 		localVarReturnValue  Group
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsFindById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsFindById")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}"
+	localVarPath := localBasePath + "/groups/{groupId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -616,7 +620,7 @@ func (a *GroupsApiService) AutoscalingGroupsFindByIdExecute(r ApiAutoscalingGrou
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsFindById",
+		Operation:  "GroupsFindById",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -679,34 +683,34 @@ func (a *GroupsApiService) AutoscalingGroupsFindByIdExecute(r ApiAutoscalingGrou
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsGetRequest struct {
+type ApiGroupsGetRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	depth      *float32
 	orderBy    *string
 }
 
-func (r ApiAutoscalingGroupsGetRequest) Depth(depth float32) ApiAutoscalingGroupsGetRequest {
+func (r ApiGroupsGetRequest) Depth(depth float32) ApiGroupsGetRequest {
 	r.depth = &depth
 	return r
 }
-func (r ApiAutoscalingGroupsGetRequest) OrderBy(orderBy string) ApiAutoscalingGroupsGetRequest {
+func (r ApiGroupsGetRequest) OrderBy(orderBy string) ApiGroupsGetRequest {
 	r.orderBy = &orderBy
 	return r
 }
 
-func (r ApiAutoscalingGroupsGetRequest) Execute() (GroupCollection, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsGetExecute(r)
+func (r ApiGroupsGetRequest) Execute() (GroupCollection, *APIResponse, error) {
+	return r.ApiService.GroupsGetExecute(r)
 }
 
 /*
- * AutoscalingGroupsGet List autoscaling groups
- * List all autoscaling groups for your account.
+ * GroupsGet Get Auto Scaling Groups
+ * Lists all Auto Scaling groups of your account.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @return ApiAutoscalingGroupsGetRequest
+ * @return ApiGroupsGetRequest
  */
-func (a *GroupsApiService) AutoscalingGroupsGet(ctx _context.Context) ApiAutoscalingGroupsGetRequest {
-	return ApiAutoscalingGroupsGetRequest{
+func (a *GroupsApiService) GroupsGet(ctx _context.Context) ApiGroupsGetRequest {
+	return ApiGroupsGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -716,7 +720,7 @@ func (a *GroupsApiService) AutoscalingGroupsGet(ctx _context.Context) ApiAutosca
  * Execute executes the request
  * @return GroupCollection
  */
-func (a *GroupsApiService) AutoscalingGroupsGetExecute(r ApiAutoscalingGroupsGetRequest) (GroupCollection, *APIResponse, error) {
+func (a *GroupsApiService) GroupsGetExecute(r ApiGroupsGetRequest) (GroupCollection, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -726,12 +730,12 @@ func (a *GroupsApiService) AutoscalingGroupsGetExecute(r ApiAutoscalingGroupsGet
 		localVarReturnValue  GroupCollection
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsGet")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups"
+	localVarPath := localBasePath + "/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -785,7 +789,7 @@ func (a *GroupsApiService) AutoscalingGroupsGetExecute(r ApiAutoscalingGroupsGet
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsGet",
+		Operation:  "GroupsGet",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -848,54 +852,31 @@ func (a *GroupsApiService) AutoscalingGroupsGetExecute(r ApiAutoscalingGroupsGet
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsPostRequest struct {
+type ApiGroupsPostRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
-	group      *Group
+	groupPost  *GroupPost
 }
 
-func (r ApiAutoscalingGroupsPostRequest) Group(group Group) ApiAutoscalingGroupsPostRequest {
-	r.group = &group
+func (r ApiGroupsPostRequest) GroupPost(groupPost GroupPost) ApiGroupsPostRequest {
+	r.groupPost = &groupPost
 	return r
 }
 
-func (r ApiAutoscalingGroupsPostRequest) Execute() (GroupPostResponse, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsPostExecute(r)
+func (r ApiGroupsPostRequest) Execute() (GroupPostResponse, *APIResponse, error) {
+	return r.ApiService.GroupsPostExecute(r)
 }
 
 /*
- * AutoscalingGroupsPost Create autoscaling groups
- * Create autoscaling groups with this POST method. Creation of a group will trigger the creation of two monitoring alarms, for ‘Scale In’ and ‘Scale Out’ operations, according to "policy" settings.
+  - GroupsPost Create an Auto Scaling Group
+  - Creates an Auto Scaling group.
 
- "properties.name" must not be null or blank.
-
- "properties.targetReplicaCount" is optional attribute which must be >= minReplicaCount and <= maxReplicaCount if provided in the request body.
-
- "properties.minReplicaCount" must be >= 0 and <= 200.
-
- "properties.maxReplicaCount" must be >= 0 and <= 200.
-
- "properties.datacenter.id" must be a valid data center ID.
-
- "properties.policy.metric" must be one of: INSTANCE_CPU_UTILIZATION_AVERAGE, INSTANCE_NETWORK_IN_BYTES, INSTANCE_NETWORK_OUT_BYTES, INSTANCE_NETWORK_IN_PACKETS, INSTANCE_NETWORK_OUT_PACKETS.
-
- "properties.policy.unit" must be one of:  PER_SECOND, PER_MINUTE, PER_HOUR, TOTAL.
- TOTAL can be combined only with INSTANCE_CPU_UTILIZATION_AVERAGE.
-
- "properties.policy.range" must be >= 2 minutes.
-
- If "properties.policy.unit" is "TOTAL", then "properties.policy.scaleOutThreshold - properties.policy.scaleInThreshold" must be >= 40.
-
- "properties.policy.scaleInAction.amount" (the same is true for "properties.policy.scaleOutAction.amount") must be:
- in case of properties.policy.scaleInAction.amountType = ABSOLUTE: 1 <= properties.policy.scaleInAction.amount <= 10
- in case of properties.policy.scaleInAction.amountType = PERCENTAGE: 1 <= properties.policy.scaleInAction.amount <= 200
-
- "properties.policy.scaleInAction.cooldownPeriod" (the same is true for "properties.policy.scaleOutAction.cooldownPeriod") must be: >= 2 minutes and <= 24 hours with a default value of 5 minutes if not provided in the request payload or given with null, empty string or spaces.
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @return ApiAutoscalingGroupsPostRequest
+> Note that creating a group triggers the creation of two monitoring alarms for 'Scale-In' and 'Scale-Out' operations according to the 'Policy' settings.
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @return ApiGroupsPostRequest
 */
-func (a *GroupsApiService) AutoscalingGroupsPost(ctx _context.Context) ApiAutoscalingGroupsPostRequest {
-	return ApiAutoscalingGroupsPostRequest{
+func (a *GroupsApiService) GroupsPost(ctx _context.Context) ApiGroupsPostRequest {
+	return ApiGroupsPostRequest{
 		ApiService: a,
 		ctx:        ctx,
 	}
@@ -905,7 +886,7 @@ func (a *GroupsApiService) AutoscalingGroupsPost(ctx _context.Context) ApiAutosc
  * Execute executes the request
  * @return GroupPostResponse
  */
-func (a *GroupsApiService) AutoscalingGroupsPostExecute(r ApiAutoscalingGroupsPostRequest) (GroupPostResponse, *APIResponse, error) {
+func (a *GroupsApiService) GroupsPostExecute(r ApiGroupsPostRequest) (GroupPostResponse, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -915,18 +896,18 @@ func (a *GroupsApiService) AutoscalingGroupsPostExecute(r ApiAutoscalingGroupsPo
 		localVarReturnValue  GroupPostResponse
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsPost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsPost")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups"
+	localVarPath := localBasePath + "/groups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	if r.group == nil {
-		return localVarReturnValue, nil, reportError("group is required and must be specified")
+	if r.groupPost == nil {
+		return localVarReturnValue, nil, reportError("groupPost is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -947,7 +928,7 @@ func (a *GroupsApiService) AutoscalingGroupsPostExecute(r ApiAutoscalingGroupsPo
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.group
+	localVarPostBody = r.groupPost
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -973,7 +954,7 @@ func (a *GroupsApiService) AutoscalingGroupsPostExecute(r ApiAutoscalingGroupsPo
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsPost",
+		Operation:  "GroupsPost",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -1045,33 +1026,31 @@ func (a *GroupsApiService) AutoscalingGroupsPostExecute(r ApiAutoscalingGroupsPo
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsPutRequest struct {
-	ctx         _context.Context
-	ApiService  *GroupsApiService
-	groupId     string
-	groupUpdate *GroupUpdate
+type ApiGroupsPutRequest struct {
+	ctx        _context.Context
+	ApiService *GroupsApiService
+	groupId    string
+	groupPut   *GroupPut
 }
 
-func (r ApiAutoscalingGroupsPutRequest) GroupUpdate(groupUpdate GroupUpdate) ApiAutoscalingGroupsPutRequest {
-	r.groupUpdate = &groupUpdate
+func (r ApiGroupsPutRequest) GroupPut(groupPut GroupPut) ApiGroupsPutRequest {
+	r.groupPut = &groupPut
 	return r
 }
 
-func (r ApiAutoscalingGroupsPutRequest) Execute() (Group, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsPutExecute(r)
+func (r ApiGroupsPutRequest) Execute() (Group, *APIResponse, error) {
+	return r.ApiService.GroupsPutExecute(r)
 }
 
 /*
- * AutoscalingGroupsPut Update autoscaling groups
- * Update the specified autoscaling group.
-"properties.datacenter.id" is immutable after creation and cannot be updated.
- The other validations are the same as when creating a group.
+ * GroupsPut Update an Auto Scaling Group by ID
+ * Updates the Auto Scaling group specified by its ID. The IDs assigned by the system when the resource is created, such as 'properties.datacenter.id' and 'backupunitId', are immutable and cannot be updated.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param groupId
- * @return ApiAutoscalingGroupsPutRequest
-*/
-func (a *GroupsApiService) AutoscalingGroupsPut(ctx _context.Context, groupId string) ApiAutoscalingGroupsPutRequest {
-	return ApiAutoscalingGroupsPutRequest{
+ * @return ApiGroupsPutRequest
+ */
+func (a *GroupsApiService) GroupsPut(ctx _context.Context, groupId string) ApiGroupsPutRequest {
+	return ApiGroupsPutRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -1082,7 +1061,7 @@ func (a *GroupsApiService) AutoscalingGroupsPut(ctx _context.Context, groupId st
  * Execute executes the request
  * @return Group
  */
-func (a *GroupsApiService) AutoscalingGroupsPutExecute(r ApiAutoscalingGroupsPutRequest) (Group, *APIResponse, error) {
+func (a *GroupsApiService) GroupsPutExecute(r ApiGroupsPutRequest) (Group, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -1092,19 +1071,19 @@ func (a *GroupsApiService) AutoscalingGroupsPutExecute(r ApiAutoscalingGroupsPut
 		localVarReturnValue  Group
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsPut")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsPut")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}"
+	localVarPath := localBasePath + "/groups/{groupId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	if r.groupUpdate == nil {
-		return localVarReturnValue, nil, reportError("groupUpdate is required and must be specified")
+	if r.groupPut == nil {
+		return localVarReturnValue, nil, reportError("groupPut is required and must be specified")
 	}
 
 	// to determine the Content-Type header
@@ -1125,7 +1104,7 @@ func (a *GroupsApiService) AutoscalingGroupsPutExecute(r ApiAutoscalingGroupsPut
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.groupUpdate
+	localVarPostBody = r.groupPut
 	if r.ctx != nil {
 		// API Key Authentication
 		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
@@ -1151,7 +1130,7 @@ func (a *GroupsApiService) AutoscalingGroupsPutExecute(r ApiAutoscalingGroupsPut
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsPut",
+		Operation:  "GroupsPut",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -1214,7 +1193,7 @@ func (a *GroupsApiService) AutoscalingGroupsPutExecute(r ApiAutoscalingGroupsPut
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsServersFindByIdRequest struct {
+type ApiGroupsServersFindByIdRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	groupId    string
@@ -1222,27 +1201,27 @@ type ApiAutoscalingGroupsServersFindByIdRequest struct {
 	depth      *float32
 }
 
-func (r ApiAutoscalingGroupsServersFindByIdRequest) Depth(depth float32) ApiAutoscalingGroupsServersFindByIdRequest {
+func (r ApiGroupsServersFindByIdRequest) Depth(depth float32) ApiGroupsServersFindByIdRequest {
 	r.depth = &depth
 	return r
 }
 
-func (r ApiAutoscalingGroupsServersFindByIdRequest) Execute() (Server, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsServersFindByIdExecute(r)
+func (r ApiGroupsServersFindByIdRequest) Execute() (Server, *APIResponse, error) {
+	return r.ApiService.GroupsServersFindByIdExecute(r)
 }
 
 /*
- * AutoscalingGroupsServersFindById Retrieve group servers by UUID
- * Retrieve the properties of the specificed server in autoscaling group.
+  - GroupsServersFindById Get Auto Scaling Group Server by ID
+  - Retrieves the properties of the server specified by its ID.
 
-Please note that the autoscaling group server IDs are distinct from, and do not match the VM server IDs in the data center.
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param groupId
- * @param serverId
- * @return ApiAutoscalingGroupsServersFindByIdRequest
+>Note that the server IDs of the Auto Scaling groups are different from and do not match the VM server IDs in the data center.
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param groupId
+  - @param serverId
+  - @return ApiGroupsServersFindByIdRequest
 */
-func (a *GroupsApiService) AutoscalingGroupsServersFindById(ctx _context.Context, groupId string, serverId string) ApiAutoscalingGroupsServersFindByIdRequest {
-	return ApiAutoscalingGroupsServersFindByIdRequest{
+func (a *GroupsApiService) GroupsServersFindById(ctx _context.Context, groupId string, serverId string) ApiGroupsServersFindByIdRequest {
+	return ApiGroupsServersFindByIdRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -1254,7 +1233,7 @@ func (a *GroupsApiService) AutoscalingGroupsServersFindById(ctx _context.Context
  * Execute executes the request
  * @return Server
  */
-func (a *GroupsApiService) AutoscalingGroupsServersFindByIdExecute(r ApiAutoscalingGroupsServersFindByIdRequest) (Server, *APIResponse, error) {
+func (a *GroupsApiService) GroupsServersFindByIdExecute(r ApiGroupsServersFindByIdRequest) (Server, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1264,12 +1243,12 @@ func (a *GroupsApiService) AutoscalingGroupsServersFindByIdExecute(r ApiAutoscal
 		localVarReturnValue  Server
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsServersFindById")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsServersFindById")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}/servers/{serverId}"
+	localVarPath := localBasePath + "/groups/{groupId}/servers/{serverId}"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"serverId"+"}", _neturl.PathEscape(parameterToString(r.serverId, "")), -1)
 
@@ -1322,7 +1301,7 @@ func (a *GroupsApiService) AutoscalingGroupsServersFindByIdExecute(r ApiAutoscal
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsServersFindById",
+		Operation:  "GroupsServersFindById",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {
@@ -1385,7 +1364,7 @@ func (a *GroupsApiService) AutoscalingGroupsServersFindByIdExecute(r ApiAutoscal
 	return localVarReturnValue, localVarAPIResponse, nil
 }
 
-type ApiAutoscalingGroupsServersGetRequest struct {
+type ApiGroupsServersGetRequest struct {
 	ctx        _context.Context
 	ApiService *GroupsApiService
 	groupId    string
@@ -1393,30 +1372,30 @@ type ApiAutoscalingGroupsServersGetRequest struct {
 	orderBy    *string
 }
 
-func (r ApiAutoscalingGroupsServersGetRequest) Depth(depth float32) ApiAutoscalingGroupsServersGetRequest {
+func (r ApiGroupsServersGetRequest) Depth(depth float32) ApiGroupsServersGetRequest {
 	r.depth = &depth
 	return r
 }
-func (r ApiAutoscalingGroupsServersGetRequest) OrderBy(orderBy string) ApiAutoscalingGroupsServersGetRequest {
+func (r ApiGroupsServersGetRequest) OrderBy(orderBy string) ApiGroupsServersGetRequest {
 	r.orderBy = &orderBy
 	return r
 }
 
-func (r ApiAutoscalingGroupsServersGetRequest) Execute() (ServerCollection, *APIResponse, error) {
-	return r.ApiService.AutoscalingGroupsServersGetExecute(r)
+func (r ApiGroupsServersGetRequest) Execute() (ServerCollection, *APIResponse, error) {
+	return r.ApiService.GroupsServersGetExecute(r)
 }
 
 /*
- * AutoscalingGroupsServersGet Retrieve autoscaling group servers
- * Retrieve all servers, associated with the specified autoscaling group.
+  - GroupsServersGet Get Auto Scaling Group Servers
+  - Retrieves all servers associated with the Auto Scaling group specified by its ID.
 
-Please note that the autoscaling group server IDs are distinct from, and do not match the VM server IDs in the data center.
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param groupId
- * @return ApiAutoscalingGroupsServersGetRequest
+>Note that the server IDs of the Auto Scaling groups are different from and do not match the VM server IDs in the data center.
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param groupId
+  - @return ApiGroupsServersGetRequest
 */
-func (a *GroupsApiService) AutoscalingGroupsServersGet(ctx _context.Context, groupId string) ApiAutoscalingGroupsServersGetRequest {
-	return ApiAutoscalingGroupsServersGetRequest{
+func (a *GroupsApiService) GroupsServersGet(ctx _context.Context, groupId string) ApiGroupsServersGetRequest {
+	return ApiGroupsServersGetRequest{
 		ApiService: a,
 		ctx:        ctx,
 		groupId:    groupId,
@@ -1427,7 +1406,7 @@ func (a *GroupsApiService) AutoscalingGroupsServersGet(ctx _context.Context, gro
  * Execute executes the request
  * @return ServerCollection
  */
-func (a *GroupsApiService) AutoscalingGroupsServersGetExecute(r ApiAutoscalingGroupsServersGetRequest) (ServerCollection, *APIResponse, error) {
+func (a *GroupsApiService) GroupsServersGetExecute(r ApiGroupsServersGetRequest) (ServerCollection, *APIResponse, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1437,12 +1416,12 @@ func (a *GroupsApiService) AutoscalingGroupsServersGetExecute(r ApiAutoscalingGr
 		localVarReturnValue  ServerCollection
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.AutoscalingGroupsServersGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupsApiService.GroupsServersGet")
 	if err != nil {
 		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/cloudapi/autoscaling/groups/{groupId}/servers"
+	localVarPath := localBasePath + "/groups/{groupId}/servers"
 	localVarPath = strings.Replace(localVarPath, "{"+"groupId"+"}", _neturl.PathEscape(parameterToString(r.groupId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1497,7 +1476,7 @@ func (a *GroupsApiService) AutoscalingGroupsServersGetExecute(r ApiAutoscalingGr
 		Response:   localVarHTTPResponse,
 		Method:     localVarHTTPMethod,
 		RequestURL: localVarPath,
-		Operation:  "AutoscalingGroupsServersGet",
+		Operation:  "GroupsServersGet",
 	}
 
 	if err != nil || localVarHTTPResponse == nil {

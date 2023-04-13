@@ -1,18 +1,33 @@
 # GroupPolicyScaleInAction
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Amount** | **float32** | When &#x60;amountType &#x3D;&#x3D; ABSOLUTE&#x60;, this is the number of VMs added or removed in one step. When &#x60;amountType &#x3D;&#x3D; PERCENTAGE&#x60;, this is a percentage value, which will be applied to the autoscaling group&#39;s current &#x60;targetReplicaCount&#x60; in order to derive the number of VMs that will be added or removed in one step. There will always be at least one VM added or removed.   For SCALE_IN operation now volumes are NOT deleted after the server deletion. | |
+|**Amount** | **float32** | &#39;amountType&#x3D;ABSOLUTE&#39; specifies the absolute number of VMs that are added or removed. The value must be between 1 to 10.   &#39;amountType&#x3D;PERCENTAGE&#39; specifies the percentage value that is applied to the current &#39;targetReplicaCount&#39; of the autoscaling group. The value must be between 1 to 200.   At least one VM is always added or removed.   Note that for &#39;SCALE_IN&#39; operations, volumes are not deleted after the server is deleted. | |
 |**AmountType** | [**ActionAmount**](ActionAmount.md) |  | |
-|**CooldownPeriod** | Pointer to **NullableString** | Minimum time to pass after this Scaling action has started, until the next Scaling action will be started. Additionally, if a Scaling action is currently in progress, no second Scaling action will be started for the same autoscaling group. Instead, the Metric will be re-evaluated after the current Scaling action is completed (either successfully or with failures). This is validated with a minimum value of 2 minutes and a maximum of 24 hours currently. Default value is 5 minutes if not given. | [optional] [default to "5m"]|
-|**TerminationPolicy** | Pointer to [**TerminationPolicyType**](TerminationPolicyType.md) |  | [optional] |
+|**CooldownPeriod** | Pointer to **NullableString** | The minimum time that elapses after the start of this scaling action until the next scaling action is started. With a scaling action in progress, no second scaling action is started for the same Auto Scaling group. Instead, the metric is re-evaluated after the current scaling action completes (either successfully or with errors). This is currently validated with a minimum value of 2 minutes and a maximum value of 24 hours. The default value is 5 minutes if not specified. | [optional] [default to "5m"]|
+|**TerminationPolicy** | Pointer to [**NullableTerminationPolicyType**](TerminationPolicyType.md) |  | [optional] |
+|**DeleteVolumes** | **bool** | If set to &#x60;true&#x60;, when deleting an replica during scale in, any attached volume will also be deleted. When set to &#x60;false&#x60;, all volumes remain in the datacenter and must be deleted manually.  **Note**, that every scale-out creates new volumes. When they are not deleted, they will eventually use all of your contracts resource limits. At this point, scaling out would not be possible anymore. | |
 
 ## Methods
 
+### NewGroupPolicyScaleInAction
+
+`func NewGroupPolicyScaleInAction(amount float32, amountType ActionAmount, deleteVolumes bool, ) *GroupPolicyScaleInAction`
+
+NewGroupPolicyScaleInAction instantiates a new GroupPolicyScaleInAction object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewGroupPolicyScaleInActionWithDefaults
+
+`func NewGroupPolicyScaleInActionWithDefaults() *GroupPolicyScaleInAction`
+
+NewGroupPolicyScaleInActionWithDefaults instantiates a new GroupPolicyScaleInAction object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetAmount
 
@@ -113,6 +128,36 @@ SetTerminationPolicy sets TerminationPolicy field to given value.
 `func (o *GroupPolicyScaleInAction) HasTerminationPolicy() bool`
 
 HasTerminationPolicy returns a boolean if a field has been set.
+
+### SetTerminationPolicyNil
+
+`func (o *GroupPolicyScaleInAction) SetTerminationPolicyNil(b bool)`
+
+ SetTerminationPolicyNil sets the value for TerminationPolicy to be an explicit nil
+
+### UnsetTerminationPolicy
+`func (o *GroupPolicyScaleInAction) UnsetTerminationPolicy()`
+
+UnsetTerminationPolicy ensures that no value is present for TerminationPolicy, not even an explicit nil
+### GetDeleteVolumes
+
+`func (o *GroupPolicyScaleInAction) GetDeleteVolumes() bool`
+
+GetDeleteVolumes returns the DeleteVolumes field if non-nil, zero value otherwise.
+
+### GetDeleteVolumesOk
+
+`func (o *GroupPolicyScaleInAction) GetDeleteVolumesOk() (*bool, bool)`
+
+GetDeleteVolumesOk returns a tuple with the DeleteVolumes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDeleteVolumes
+
+`func (o *GroupPolicyScaleInAction) SetDeleteVolumes(v bool)`
+
+SetDeleteVolumes sets DeleteVolumes field to given value.
+
 
 
 

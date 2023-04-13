@@ -1,7 +1,5 @@
 # ServerProperties
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
@@ -11,6 +9,22 @@
 
 ## Methods
 
+### NewServerProperties
+
+`func NewServerProperties(datacenterServer DatacenterServer, ) *ServerProperties`
+
+NewServerProperties instantiates a new ServerProperties object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewServerPropertiesWithDefaults
+
+`func NewServerPropertiesWithDefaults() *ServerProperties`
+
+NewServerPropertiesWithDefaults instantiates a new ServerProperties object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetDatacenterServer
 

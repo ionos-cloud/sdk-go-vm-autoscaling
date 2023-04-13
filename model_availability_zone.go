@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -16,14 +16,12 @@ import (
 	"fmt"
 )
 
-// AvailabilityZone The zone where the VMs are created using this configuration.
+// AvailabilityZone The zone where the VMs are created. The availability zone is always automatically set to 'AUTO' for performance reasons. Even if you set another value, e.g. 'null', or leave it empty.
 type AvailabilityZone string
 
 // List of AvailabilityZone
 const (
-	AUTO   AvailabilityZone = "AUTO"
-	ZONE_1 AvailabilityZone = "ZONE_1"
-	ZONE_2 AvailabilityZone = "ZONE_2"
+	AUTO AvailabilityZone = "AUTO"
 )
 
 func (v *AvailabilityZone) UnmarshalJSON(src []byte) error {
@@ -33,7 +31,7 @@ func (v *AvailabilityZone) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := AvailabilityZone(value)
-	for _, existing := range []AvailabilityZone{"AUTO", "ZONE_1", "ZONE_2"} {
+	for _, existing := range []AvailabilityZone{"AUTO"} {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil

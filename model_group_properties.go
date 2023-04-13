@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,19 +17,19 @@ import (
 
 // GroupProperties struct for GroupProperties
 type GroupProperties struct {
-	// Maximum replica count value for `targetReplicaCount`. Will be enforced for both automatic and manual changes.
+	Datacenter *GroupPutPropertiesDatacenter `json:"datacenter,omitempty"`
+	// The data center location.
+	Location *string `json:"location"`
+	// The maximum value for the number of replicas for 'targetReplicaCount'. Must be >= 0 and <= 200. Will be enforced for both automatic and manual changes.
 	MaxReplicaCount *int64 `json:"maxReplicaCount,omitempty"`
-	// Minimum replica count value for `targetReplicaCount`. Will be enforced for both automatic and manual changes.
+	// The minimum value for the number of replicas for 'targetReplicaCount'. Must be >= 0 and <= 200. Will be enforced for both automatic and manual changes
 	MinReplicaCount *int64 `json:"minReplicaCount,omitempty"`
-	// The target number of VMs in this Group. Depending on the scaling policy, this number will be adjusted automatically. VMs will be created or destroyed automatically in order to adjust the actual number of VMs to this number. If targetReplicaCount is given in the request body then it must be >= minReplicaCount and <= maxReplicaCount.
+	// The target number of VMs in this group. Depending on the scaling policy, this number is automatically adjusted. VMs are automatically created or destroyed to adjust the actual number of VMs to this target number. If 'targetReplicaCount' is specified in the request body, it must be '>= minReplicaCount' and '<= maxReplicaCount'.
 	TargetReplicaCount *int64 `json:"targetReplicaCount,omitempty"`
-	// User-defined name for the autoscaling group.
+	// The name of the Auto Scaling group. This field must not be null or blank.
 	Name                 *string                `json:"name,omitempty"`
 	Policy               *GroupPolicy           `json:"policy,omitempty"`
 	ReplicaConfiguration *ReplicaPropertiesPost `json:"replicaConfiguration,omitempty"`
-	Datacenter           *Resource              `json:"datacenter,omitempty"`
-	// Location of the data center.
-	Location *string `json:"location"`
 }
 
 // NewGroupProperties instantiates a new GroupProperties object
@@ -50,6 +50,82 @@ func NewGroupProperties(location string) *GroupProperties {
 func NewGroupPropertiesWithDefaults() *GroupProperties {
 	this := GroupProperties{}
 	return &this
+}
+
+// GetDatacenter returns the Datacenter field value
+// If the value is explicit nil, the zero value for GroupPutPropertiesDatacenter will be returned
+func (o *GroupProperties) GetDatacenter() *GroupPutPropertiesDatacenter {
+	if o == nil {
+		return nil
+	}
+
+	return o.Datacenter
+
+}
+
+// GetDatacenterOk returns a tuple with the Datacenter field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GroupProperties) GetDatacenterOk() (*GroupPutPropertiesDatacenter, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.Datacenter, true
+}
+
+// SetDatacenter sets field value
+func (o *GroupProperties) SetDatacenter(v GroupPutPropertiesDatacenter) {
+
+	o.Datacenter = &v
+
+}
+
+// HasDatacenter returns a boolean if a field has been set.
+func (o *GroupProperties) HasDatacenter() bool {
+	if o != nil && o.Datacenter != nil {
+		return true
+	}
+
+	return false
+}
+
+// GetLocation returns the Location field value
+// If the value is explicit nil, the zero value for string will be returned
+func (o *GroupProperties) GetLocation() *string {
+	if o == nil {
+		return nil
+	}
+
+	return o.Location
+
+}
+
+// GetLocationOk returns a tuple with the Location field value
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *GroupProperties) GetLocationOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+
+	return o.Location, true
+}
+
+// SetLocation sets field value
+func (o *GroupProperties) SetLocation(v string) {
+
+	o.Location = &v
+
+}
+
+// HasLocation returns a boolean if a field has been set.
+func (o *GroupProperties) HasLocation() bool {
+	if o != nil && o.Location != nil {
+		return true
+	}
+
+	return false
 }
 
 // GetMaxReplicaCount returns the MaxReplicaCount field value
@@ -280,84 +356,16 @@ func (o *GroupProperties) HasReplicaConfiguration() bool {
 	return false
 }
 
-// GetDatacenter returns the Datacenter field value
-// If the value is explicit nil, the zero value for Resource will be returned
-func (o *GroupProperties) GetDatacenter() *Resource {
-	if o == nil {
-		return nil
-	}
-
-	return o.Datacenter
-
-}
-
-// GetDatacenterOk returns a tuple with the Datacenter field value
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *GroupProperties) GetDatacenterOk() (*Resource, bool) {
-	if o == nil {
-		return nil, false
-	}
-
-	return o.Datacenter, true
-}
-
-// SetDatacenter sets field value
-func (o *GroupProperties) SetDatacenter(v Resource) {
-
-	o.Datacenter = &v
-
-}
-
-// HasDatacenter returns a boolean if a field has been set.
-func (o *GroupProperties) HasDatacenter() bool {
-	if o != nil && o.Datacenter != nil {
-		return true
-	}
-
-	return false
-}
-
-// GetLocation returns the Location field value
-// If the value is explicit nil, the zero value for string will be returned
-func (o *GroupProperties) GetLocation() *string {
-	if o == nil {
-		return nil
-	}
-
-	return o.Location
-
-}
-
-// GetLocationOk returns a tuple with the Location field value
-// and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *GroupProperties) GetLocationOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-
-	return o.Location, true
-}
-
-// SetLocation sets field value
-func (o *GroupProperties) SetLocation(v string) {
-
-	o.Location = &v
-
-}
-
-// HasLocation returns a boolean if a field has been set.
-func (o *GroupProperties) HasLocation() bool {
-	if o != nil && o.Location != nil {
-		return true
-	}
-
-	return false
-}
-
 func (o GroupProperties) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
+	if o.Datacenter != nil {
+		toSerialize["datacenter"] = o.Datacenter
+	}
+
+	if o.Location != nil {
+		toSerialize["location"] = o.Location
+	}
+
 	if o.MaxReplicaCount != nil {
 		toSerialize["maxReplicaCount"] = o.MaxReplicaCount
 	}
@@ -380,14 +388,6 @@ func (o GroupProperties) MarshalJSON() ([]byte, error) {
 
 	if o.ReplicaConfiguration != nil {
 		toSerialize["replicaConfiguration"] = o.ReplicaConfiguration
-	}
-
-	if o.Datacenter != nil {
-		toSerialize["datacenter"] = o.Datacenter
-	}
-
-	if o.Location != nil {
-		toSerialize["location"] = o.Location
 	}
 
 	return json.Marshal(toSerialize)

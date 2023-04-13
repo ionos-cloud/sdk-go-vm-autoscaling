@@ -1,18 +1,32 @@
 # ActionCollection
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | The resource&#39;s unique identifier | [readonly] |
-|**Type** | Pointer to **string** | The type of object that has been created | [optional] [readonly] |
-|**Href** | Pointer to **string** | URL to the object representation (absolute path) | [optional] [readonly] |
-|**Items** | Pointer to [**[]Action**](Action.md) |  | [optional] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
+|**Items** | Pointer to [**[]ActionResource**](ActionResource.md) |  | [optional] |
 
 ## Methods
 
+### NewActionCollection
+
+`func NewActionCollection(id string, ) *ActionCollection`
+
+NewActionCollection instantiates a new ActionCollection object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewActionCollectionWithDefaults
+
+`func NewActionCollectionWithDefaults() *ActionCollection`
+
+NewActionCollectionWithDefaults instantiates a new ActionCollection object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 
@@ -86,20 +100,20 @@ HasHref returns a boolean if a field has been set.
 
 ### GetItems
 
-`func (o *ActionCollection) GetItems() []Action`
+`func (o *ActionCollection) GetItems() []ActionResource`
 
 GetItems returns the Items field if non-nil, zero value otherwise.
 
 ### GetItemsOk
 
-`func (o *ActionCollection) GetItemsOk() (*[]Action, bool)`
+`func (o *ActionCollection) GetItemsOk() (*[]ActionResource, bool)`
 
 GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetItems
 
-`func (o *ActionCollection) SetItems(v []Action)`
+`func (o *ActionCollection) SetItems(v []ActionResource)`
 
 SetItems sets Items field to given value.
 

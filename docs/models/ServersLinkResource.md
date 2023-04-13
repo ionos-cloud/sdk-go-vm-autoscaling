@@ -1,17 +1,31 @@
 # ServersLinkResource
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | The resource&#39;s unique identifier | [readonly] |
-|**Type** | Pointer to **string** | The type of object that has been created | [optional] [readonly] |
-|**Href** | Pointer to **string** | URL to the object representation (absolute path) | [optional] [readonly] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 
 ## Methods
 
+### NewServersLinkResource
+
+`func NewServersLinkResource(id string, ) *ServersLinkResource`
+
+NewServersLinkResource instantiates a new ServersLinkResource object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewServersLinkResourceWithDefaults
+
+`func NewServersLinkResourceWithDefaults() *ServersLinkResource`
+
+NewServersLinkResourceWithDefaults instantiates a new ServersLinkResource object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 

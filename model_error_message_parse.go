@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,7 +17,7 @@ import (
 
 // ErrorMessageParse struct for ErrorMessageParse
 type ErrorMessageParse struct {
-	ErrorCode *int    `json:"errorCode,omitempty"`
+	ErrorCode *string `json:"errorCode,omitempty"`
 	Message   *string `json:"message,omitempty"`
 }
 
@@ -40,8 +40,8 @@ func NewErrorMessageParseWithDefaults() *ErrorMessageParse {
 }
 
 // GetErrorCode returns the ErrorCode field value
-// If the value is explicit nil, the zero value for int will be returned
-func (o *ErrorMessageParse) GetErrorCode() *int {
+// If the value is explicit nil, the zero value for string will be returned
+func (o *ErrorMessageParse) GetErrorCode() *string {
 	if o == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func (o *ErrorMessageParse) GetErrorCode() *int {
 // GetErrorCodeOk returns a tuple with the ErrorCode field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *ErrorMessageParse) GetErrorCodeOk() (*int, bool) {
+func (o *ErrorMessageParse) GetErrorCodeOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -62,7 +62,7 @@ func (o *ErrorMessageParse) GetErrorCodeOk() (*int, bool) {
 }
 
 // SetErrorCode sets field value
-func (o *ErrorMessageParse) SetErrorCode(v int) {
+func (o *ErrorMessageParse) SetErrorCode(v string) {
 
 	o.ErrorCode = &v
 

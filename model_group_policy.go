@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -15,16 +15,16 @@ import (
 	"encoding/json"
 )
 
-// GroupPolicy Specifies the behavior of this autoscaling group. A policy consists of Triggers and Actions, whereby an Action is some kind of automated behavior, and the Trigger defines the circumstances, under which the Action is triggered. Currently, two separate Actions, namely Scaling In and Out are supported, triggered through the thresholds, defined for a given Metric.
+// GroupPolicy Defines the behavior of this Auto Scaling group. A policy consists of triggers and actions, where an action is an automated behavior, and the trigger defines the circumstances under which the action is triggered. Currently, two separate actions are supported, namely scaling inward and outward, triggered by the thresholds defined for a particular metric.
 type GroupPolicy struct {
 	Metric *Metric `json:"metric"`
-	// Defines the time range, for which the samples will be aggregated.
+	// Specifies the time range for which the samples are to be aggregated. Must be >= 2 minutes.
 	Range         *string                   `json:"range,omitempty"`
 	ScaleInAction *GroupPolicyScaleInAction `json:"scaleInAction"`
-	// The lower threshold for the value of the `metric`. Will be used with `less than` (<) operator. Exceeding this will start a Scale-In action as specified by the `scaleInAction` property. The value must have a higher minimum delta to the `scaleOutThreshold` depending on the `metric` to avoid competitive actions at the same time.
+	// The lower threshold for the value of the 'metric'. Used with the `less than` (<) operator. When this value is exceeded, a scale-in action is triggered, specified by the 'scaleInAction' property. The value must have a higher minimum delta to the 'scaleOutThreshold', depending on the 'metric', to avoid competing for actions at the same time.
 	ScaleInThreshold *float32                   `json:"scaleInThreshold"`
 	ScaleOutAction   *GroupPolicyScaleOutAction `json:"scaleOutAction"`
-	// The upper threshold for the value of the `metric`.  Will be used with `greater than` (>) operator. Exceeding this will start a Scale-Out action as specified by the `scaleOutAction` property. The value must have a lower minimum delta to the `scaleInThreshold` depending on the `metric` to avoid competitive actions at the same time.
+	// The upper threshold for the value of the 'metric'. Used with the 'greater than' (>) operator. A scale-out action is triggered when this value is exceeded, specified by the 'scaleOutAction' property. The value must have a lower minimum delta to the 'scaleInThreshold', depending on the metric, to avoid competing for actions simultaneously. If 'properties.policy.unit=TOTAL', a value >= 40 must be chosen.
 	ScaleOutThreshold *float32   `json:"scaleOutThreshold"`
 	Unit              *QueryUnit `json:"unit"`
 }
@@ -61,6 +61,8 @@ func NewGroupPolicyWithDefaults() *GroupPolicy {
 	this := GroupPolicy{}
 	var range_ string = "120s"
 	this.Range = &range_
+	var unit QueryUnit = TOTAL
+	this.Unit = &unit
 	return &this
 }
 

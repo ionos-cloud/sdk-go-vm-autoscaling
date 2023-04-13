@@ -1,19 +1,33 @@
 # ItemBasic
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | Unique resource identifier | [readonly] |
-|**Type** | Pointer to **string** | Resource type | [optional] [readonly] |
-|**Href** | Pointer to **string** | Absolute URL to the resource&#39;s representation. | [optional] [readonly] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 |**Metadata** | Pointer to [**MetadataBasic**](MetadataBasic.md) |  | [optional] |
-|**Properties** | Pointer to **map[string]interface{}** | Properties of the resource. Contents depend on the resource type. | [optional] |
+|**Properties** | Pointer to **map[string]interface{}** | The resource properties; the content depends on the resource type. | [optional] |
 
 ## Methods
 
+### NewItemBasic
+
+`func NewItemBasic(id string, ) *ItemBasic`
+
+NewItemBasic instantiates a new ItemBasic object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewItemBasicWithDefaults
+
+`func NewItemBasicWithDefaults() *ItemBasic`
+
+NewItemBasicWithDefaults instantiates a new ItemBasic object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 

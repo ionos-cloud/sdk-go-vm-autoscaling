@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -17,13 +17,13 @@ import (
 
 // ReplicaProperties struct for ReplicaProperties
 type ReplicaProperties struct {
-	AvailabilityZone *AvailabilityZone `json:"availabilityZone"`
+	AvailabilityZone *AvailabilityZone `json:"availabilityZone,omitempty"`
 	// The total number of cores for the VMs.
 	Cores     *int32     `json:"cores"`
 	CpuFamily *CpuFamily `json:"cpuFamily,omitempty"`
-	// List of NICs associated with this Replica.
+	// The list of NICs associated with this replica.
 	Nics *[]ReplicaNic `json:"nics,omitempty"`
-	// The amount of memory for the VMs in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB. If you set the RAM size more than 240GB, then ramHotPlug will be set to FALSE and can not be set to TRUE unless RAM size not set to less than 240GB.
+	// The size of the memory for the VMs in MB. The size must be in multiples of 256 MB, with a minimum of 256 MB; if you set 'ramHotPlug=TRUE', you must use at least 1024 MB. If you set the RAM size to more than 240 GB, 'ramHotPlug=FALSE' is fixed.
 	Ram *int32 `json:"ram"`
 }
 
@@ -31,10 +31,8 @@ type ReplicaProperties struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewReplicaProperties(availabilityZone AvailabilityZone, cores int32, ram int32) *ReplicaProperties {
+func NewReplicaProperties(cores int32, ram int32) *ReplicaProperties {
 	this := ReplicaProperties{}
-
-	this.AvailabilityZone = &availabilityZone
 
 	this.Cores = &cores
 
@@ -243,9 +241,7 @@ func (o *ReplicaProperties) HasRam() bool {
 
 func (o ReplicaProperties) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.AvailabilityZone != nil {
-		toSerialize["availabilityZone"] = o.AvailabilityZone
-	}
+	toSerialize["availabilityZone"] = o.AvailabilityZone
 
 	if o.Cores != nil {
 		toSerialize["cores"] = o.Cores

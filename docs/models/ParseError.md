@@ -1,34 +1,48 @@
 # ParseError
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**HttpStatus** | Pointer to **int** |  | [optional] |
+|**HttpStatus** | Pointer to **int32** |  | [optional] |
 |**Messages** | Pointer to [**[]ErrorMessageParse**](ErrorMessageParse.md) |  | [optional] |
 |**ErrorUuid** | Pointer to **string** |  | [optional] |
 
 ## Methods
 
+### NewParseError
+
+`func NewParseError() *ParseError`
+
+NewParseError instantiates a new ParseError object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewParseErrorWithDefaults
+
+`func NewParseErrorWithDefaults() *ParseError`
+
+NewParseErrorWithDefaults instantiates a new ParseError object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetHttpStatus
 
-`func (o *ParseError) GetHttpStatus() int`
+`func (o *ParseError) GetHttpStatus() int32`
 
 GetHttpStatus returns the HttpStatus field if non-nil, zero value otherwise.
 
 ### GetHttpStatusOk
 
-`func (o *ParseError) GetHttpStatusOk() (*int, bool)`
+`func (o *ParseError) GetHttpStatusOk() (*int32, bool)`
 
 GetHttpStatusOk returns a tuple with the HttpStatus field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetHttpStatus
 
-`func (o *ParseError) SetHttpStatus(v int)`
+`func (o *ParseError) SetHttpStatus(v int32)`
 
 SetHttpStatus sets HttpStatus field to given value.
 

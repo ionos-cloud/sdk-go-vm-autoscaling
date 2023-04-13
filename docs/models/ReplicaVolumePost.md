@@ -1,22 +1,39 @@
 # ReplicaVolumePost
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Image** | **string** | The image installed on the volume. Only the UUID of the image is presently supported. | |
-|**Name** | **string** | Name of the replica volume. | |
-|**Size** | **int32** | User-defined size for this replica volume in GB. | |
-|**SshKeys** | Pointer to **[]string** | Ssh keys that has access to the volume. | [optional] |
+|**Image** | Pointer to **NullableString** | The image installed on the disk. Currently, only the UUID of the image is supported.  &gt;Note that either &#39;image&#39; or &#39;imageAlias&#39; must be specified, but not both. | [optional] |
+|**ImageAlias** | Pointer to **NullableString** | The image installed on the volume. Must be an &#39;imageAlias&#39; as specified via the images API. Note that one of &#39;image&#39; or &#39;imageAlias&#39; must be set, but not both. | [optional] |
+|**Name** | **string** | The replica volume name. | |
+|**Size** | **int32** | The size of this replica volume in GB. | |
+|**SshKeys** | Pointer to **[]string** | The SSH keys of this volume. | [optional] |
 |**Type** | [**VolumeHwType**](VolumeHwType.md) |  | |
-|**UserData** | Pointer to **string** | user-data (Cloud Init) for this replica volume. | [optional] |
-|**Bus** | Pointer to [**BusType**](BusType.md) |  | [optional] |
-|**ImagePassword** | Pointer to **string** | Image password for this replica volume. | [optional] |
+|**UserData** | Pointer to **string** | The user data (Cloud Init) for this replica volume. | [optional] |
+|**Bus** | Pointer to [**BusType**](BusType.md) |  | [optional] [default to VIRTIO]|
+|**BackupunitId** | Pointer to **string** | The ID of the backup unit that the user has access to. The property is immutable and is only allowed to be set on creation of a new a volume. It is mandatory to provide either &#39;public image&#39; or &#39;imageAlias&#39; in conjunction with this property. | [optional] |
+|**BootOrder** | **string** | Determines whether the volume will be used as a boot volume. Set to NONE, the volume will not be used as boot volume. Set to PRIMARY, the volume will be used as boot volume and set to AUTO will delegate the decision to the provisioning engine to decide whether to use the voluem as boot volume. Notice that exactly one volume can be set to PRIMARY or all of them set to AUTO. | |
+|**ImagePassword** | Pointer to **string** | The image password for this replica volume. | [optional] |
 
 ## Methods
 
+### NewReplicaVolumePost
+
+`func NewReplicaVolumePost(name string, size int32, type_ VolumeHwType, bootOrder string, ) *ReplicaVolumePost`
+
+NewReplicaVolumePost instantiates a new ReplicaVolumePost object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewReplicaVolumePostWithDefaults
+
+`func NewReplicaVolumePostWithDefaults() *ReplicaVolumePost`
+
+NewReplicaVolumePostWithDefaults instantiates a new ReplicaVolumePost object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetImage
 
@@ -37,7 +54,57 @@ and a boolean to check if the value has been set.
 
 SetImage sets Image field to given value.
 
+### HasImage
 
+`func (o *ReplicaVolumePost) HasImage() bool`
+
+HasImage returns a boolean if a field has been set.
+
+### SetImageNil
+
+`func (o *ReplicaVolumePost) SetImageNil(b bool)`
+
+ SetImageNil sets the value for Image to be an explicit nil
+
+### UnsetImage
+`func (o *ReplicaVolumePost) UnsetImage()`
+
+UnsetImage ensures that no value is present for Image, not even an explicit nil
+### GetImageAlias
+
+`func (o *ReplicaVolumePost) GetImageAlias() string`
+
+GetImageAlias returns the ImageAlias field if non-nil, zero value otherwise.
+
+### GetImageAliasOk
+
+`func (o *ReplicaVolumePost) GetImageAliasOk() (*string, bool)`
+
+GetImageAliasOk returns a tuple with the ImageAlias field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetImageAlias
+
+`func (o *ReplicaVolumePost) SetImageAlias(v string)`
+
+SetImageAlias sets ImageAlias field to given value.
+
+### HasImageAlias
+
+`func (o *ReplicaVolumePost) HasImageAlias() bool`
+
+HasImageAlias returns a boolean if a field has been set.
+
+### SetImageAliasNil
+
+`func (o *ReplicaVolumePost) SetImageAliasNil(b bool)`
+
+ SetImageAliasNil sets the value for ImageAlias to be an explicit nil
+
+### UnsetImageAlias
+`func (o *ReplicaVolumePost) UnsetImageAlias()`
+
+UnsetImageAlias ensures that no value is present for ImageAlias, not even an explicit nil
 ### GetName
 
 `func (o *ReplicaVolumePost) GetName() string`
@@ -172,6 +239,51 @@ SetBus sets Bus field to given value.
 `func (o *ReplicaVolumePost) HasBus() bool`
 
 HasBus returns a boolean if a field has been set.
+
+### GetBackupunitId
+
+`func (o *ReplicaVolumePost) GetBackupunitId() string`
+
+GetBackupunitId returns the BackupunitId field if non-nil, zero value otherwise.
+
+### GetBackupunitIdOk
+
+`func (o *ReplicaVolumePost) GetBackupunitIdOk() (*string, bool)`
+
+GetBackupunitIdOk returns a tuple with the BackupunitId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBackupunitId
+
+`func (o *ReplicaVolumePost) SetBackupunitId(v string)`
+
+SetBackupunitId sets BackupunitId field to given value.
+
+### HasBackupunitId
+
+`func (o *ReplicaVolumePost) HasBackupunitId() bool`
+
+HasBackupunitId returns a boolean if a field has been set.
+
+### GetBootOrder
+
+`func (o *ReplicaVolumePost) GetBootOrder() string`
+
+GetBootOrder returns the BootOrder field if non-nil, zero value otherwise.
+
+### GetBootOrderOk
+
+`func (o *ReplicaVolumePost) GetBootOrderOk() (*string, bool)`
+
+GetBootOrderOk returns a tuple with the BootOrder field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetBootOrder
+
+`func (o *ReplicaVolumePost) SetBootOrder(v string)`
+
+SetBootOrder sets BootOrder field to given value.
+
 
 ### GetImagePassword
 

@@ -1,21 +1,80 @@
 # GroupProperties
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**MaxReplicaCount** | Pointer to **int64** | Maximum replica count value for &#x60;targetReplicaCount&#x60;. Will be enforced for both automatic and manual changes. | [optional] |
-|**MinReplicaCount** | Pointer to **int64** | Minimum replica count value for &#x60;targetReplicaCount&#x60;. Will be enforced for both automatic and manual changes. | [optional] |
-|**TargetReplicaCount** | Pointer to **int64** | The target number of VMs in this Group. Depending on the scaling policy, this number will be adjusted automatically. VMs will be created or destroyed automatically in order to adjust the actual number of VMs to this number. If targetReplicaCount is given in the request body then it must be &gt;&#x3D; minReplicaCount and &lt;&#x3D; maxReplicaCount. | [optional] |
-|**Name** | Pointer to **string** | User-defined name for the autoscaling group. | [optional] |
+|**Datacenter** | Pointer to [**GroupPutPropertiesDatacenter**](GroupPutPropertiesDatacenter.md) |  | [optional] |
+|**Location** | **string** | The data center location. | [readonly] |
+|**MaxReplicaCount** | Pointer to **int64** | The maximum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes. | [optional] |
+|**MinReplicaCount** | Pointer to **int64** | The minimum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes | [optional] |
+|**TargetReplicaCount** | Pointer to **int64** | The target number of VMs in this group. Depending on the scaling policy, this number is automatically adjusted. VMs are automatically created or destroyed to adjust the actual number of VMs to this target number. If &#39;targetReplicaCount&#39; is specified in the request body, it must be &#39;&gt;&#x3D; minReplicaCount&#39; and &#39;&lt;&#x3D; maxReplicaCount&#39;. | [optional] |
+|**Name** | Pointer to **string** | The name of the Auto Scaling group. This field must not be null or blank. | [optional] |
 |**Policy** | Pointer to [**GroupPolicy**](GroupPolicy.md) |  | [optional] |
 |**ReplicaConfiguration** | Pointer to [**ReplicaPropertiesPost**](ReplicaPropertiesPost.md) |  | [optional] |
-|**Datacenter** | Pointer to [**Resource**](Resource.md) |  | [optional] |
-|**Location** | **string** | Location of the data center. | [readonly] |
 
 ## Methods
+
+### NewGroupProperties
+
+`func NewGroupProperties(location string, ) *GroupProperties`
+
+NewGroupProperties instantiates a new GroupProperties object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewGroupPropertiesWithDefaults
+
+`func NewGroupPropertiesWithDefaults() *GroupProperties`
+
+NewGroupPropertiesWithDefaults instantiates a new GroupProperties object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetDatacenter
+
+`func (o *GroupProperties) GetDatacenter() GroupPutPropertiesDatacenter`
+
+GetDatacenter returns the Datacenter field if non-nil, zero value otherwise.
+
+### GetDatacenterOk
+
+`func (o *GroupProperties) GetDatacenterOk() (*GroupPutPropertiesDatacenter, bool)`
+
+GetDatacenterOk returns a tuple with the Datacenter field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDatacenter
+
+`func (o *GroupProperties) SetDatacenter(v GroupPutPropertiesDatacenter)`
+
+SetDatacenter sets Datacenter field to given value.
+
+### HasDatacenter
+
+`func (o *GroupProperties) HasDatacenter() bool`
+
+HasDatacenter returns a boolean if a field has been set.
+
+### GetLocation
+
+`func (o *GroupProperties) GetLocation() string`
+
+GetLocation returns the Location field if non-nil, zero value otherwise.
+
+### GetLocationOk
+
+`func (o *GroupProperties) GetLocationOk() (*string, bool)`
+
+GetLocationOk returns a tuple with the Location field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLocation
+
+`func (o *GroupProperties) SetLocation(v string)`
+
+SetLocation sets Location field to given value.
 
 
 ### GetMaxReplicaCount
@@ -167,51 +226,6 @@ SetReplicaConfiguration sets ReplicaConfiguration field to given value.
 `func (o *GroupProperties) HasReplicaConfiguration() bool`
 
 HasReplicaConfiguration returns a boolean if a field has been set.
-
-### GetDatacenter
-
-`func (o *GroupProperties) GetDatacenter() Resource`
-
-GetDatacenter returns the Datacenter field if non-nil, zero value otherwise.
-
-### GetDatacenterOk
-
-`func (o *GroupProperties) GetDatacenterOk() (*Resource, bool)`
-
-GetDatacenterOk returns a tuple with the Datacenter field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDatacenter
-
-`func (o *GroupProperties) SetDatacenter(v Resource)`
-
-SetDatacenter sets Datacenter field to given value.
-
-### HasDatacenter
-
-`func (o *GroupProperties) HasDatacenter() bool`
-
-HasDatacenter returns a boolean if a field has been set.
-
-### GetLocation
-
-`func (o *GroupProperties) GetLocation() string`
-
-GetLocation returns the Location field if non-nil, zero value otherwise.
-
-### GetLocationOk
-
-`func (o *GroupProperties) GetLocationOk() (*string, bool)`
-
-GetLocationOk returns a tuple with the Location field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLocation
-
-`func (o *GroupProperties) SetLocation(v string)`
-
-SetLocation sets Location field to given value.
-
 
 
 

@@ -1,19 +1,33 @@
 # Server
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Id** | **string** | The resource&#39;s unique identifier | [readonly] |
-|**Type** | Pointer to **string** | The type of object that has been created | [optional] [readonly] |
-|**Href** | Pointer to **string** | URL to the object representation (absolute path) | [optional] [readonly] |
+|**Id** | **string** | The unique resource identifier. | [readonly] |
+|**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
+|**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 |**Metadata** | Pointer to [**MetadataBasic**](MetadataBasic.md) |  | [optional] |
 |**Properties** | Pointer to [**ServerProperties**](ServerProperties.md) |  | [optional] |
 
 ## Methods
 
+### NewServer
+
+`func NewServer(id string, ) *Server`
+
+NewServer instantiates a new Server object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewServerWithDefaults
+
+`func NewServerWithDefaults() *Server`
+
+NewServerWithDefaults instantiates a new Server object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetId
 

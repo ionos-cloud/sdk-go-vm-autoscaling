@@ -1,19 +1,33 @@
 # ReplicaProperties
 
-
-
 ## Properties
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**AvailabilityZone** | [**AvailabilityZone**](AvailabilityZone.md) |  | |
+|**AvailabilityZone** | Pointer to [**NullableAvailabilityZone**](AvailabilityZone.md) |  | [optional] |
 |**Cores** | **int32** | The total number of cores for the VMs. | |
 |**CpuFamily** | Pointer to [**CpuFamily**](CpuFamily.md) |  | [optional] |
-|**Nics** | Pointer to [**[]ReplicaNic**](ReplicaNic.md) | List of NICs associated with this Replica. | [optional] |
-|**Ram** | **int32** | The amount of memory for the VMs in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set ramHotPlug to TRUE then you must use a minimum of 1024 MB. If you set the RAM size more than 240GB, then ramHotPlug will be set to FALSE and can not be set to TRUE unless RAM size not set to less than 240GB. | |
+|**Nics** | Pointer to [**[]ReplicaNic**](ReplicaNic.md) | The list of NICs associated with this replica. | [optional] |
+|**Ram** | **int32** | The size of the memory for the VMs in MB. The size must be in multiples of 256 MB, with a minimum of 256 MB; if you set &#39;ramHotPlug&#x3D;TRUE&#39;, you must use at least 1024 MB. If you set the RAM size to more than 240 GB, &#39;ramHotPlug&#x3D;FALSE&#39; is fixed. | |
 
 ## Methods
 
+### NewReplicaProperties
+
+`func NewReplicaProperties(cores int32, ram int32, ) *ReplicaProperties`
+
+NewReplicaProperties instantiates a new ReplicaProperties object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewReplicaPropertiesWithDefaults
+
+`func NewReplicaPropertiesWithDefaults() *ReplicaProperties`
+
+NewReplicaPropertiesWithDefaults instantiates a new ReplicaProperties object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
 
 ### GetAvailabilityZone
 
@@ -34,7 +48,22 @@ and a boolean to check if the value has been set.
 
 SetAvailabilityZone sets AvailabilityZone field to given value.
 
+### HasAvailabilityZone
 
+`func (o *ReplicaProperties) HasAvailabilityZone() bool`
+
+HasAvailabilityZone returns a boolean if a field has been set.
+
+### SetAvailabilityZoneNil
+
+`func (o *ReplicaProperties) SetAvailabilityZoneNil(b bool)`
+
+ SetAvailabilityZoneNil sets the value for AvailabilityZone to be an explicit nil
+
+### UnsetAvailabilityZone
+`func (o *ReplicaProperties) UnsetAvailabilityZone()`
+
+UnsetAvailabilityZone ensures that no value is present for AvailabilityZone, not even an explicit nil
 ### GetCores
 
 `func (o *ReplicaProperties) GetCores() int32`

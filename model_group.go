@@ -1,9 +1,9 @@
 /*
- * VM Auto Scaling service (CloudAPI)
+ * VM Auto Scaling API
  *
- * VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.  Create an Auto Scaling group that contains the server instances; Auto Scaling service will ensure that the number of instances in the group is always within these limits.  When target replica count is specified, Auto Scaling will maintain the set number on instances.  When scaling policies are specified, Auto Scaling will create or delete instances based on the demands of your applications. For each policy, specified scale-in and scale-out actions are performed whenever the corresponding thresholds are met.
+ * The VM Auto Scaling Service enables IONOS clients to horizontally scale the number of VM replicas based on configured rules. You can use Auto Scaling to ensure that you have a sufficient number of replicas to handle your application loads at all times.  For this purpose, create an Auto Scaling group that contains the server replicas. The VM Auto Scaling Service ensures that the number of replicas in the group is always within the defined limits. For example, if the number of target replicas is specified, Auto Scaling maintains the specified number of replicas.   When scaling policies are set, Auto Scaling creates or deletes replicas according to the requirements of your applications. For each policy, specified 'scale-in' and 'scale-out' actions are performed when the corresponding thresholds are reached.
  *
- * API version: 1.0
+ * API version: 1-SDK.1
  * Contact: support@cloud.ionos.com
  */
 
@@ -15,17 +15,17 @@ import (
 	"encoding/json"
 )
 
-// Group A group of virtual servers where replica count can be scaled automatically.
+// Group A group of virtual servers where the number of replicas can be scaled automatically.
 type Group struct {
-	// The resource's unique identifier
+	// The unique resource identifier.
 	Id *string `json:"id"`
-	// The type of object that has been created
+	// The resource type.
 	Type *string `json:"type,omitempty"`
-	// URL to the object representation (absolute path)
-	Href       *string          `json:"href,omitempty"`
-	Metadata   *Metadata        `json:"metadata,omitempty"`
-	Properties *GroupProperties `json:"properties"`
-	Entities   *GroupEntities   `json:"entities,omitempty"`
+	// The absolute URL to the resource's representation.
+	Href       *string            `json:"href,omitempty"`
+	Metadata   *Metadata          `json:"metadata,omitempty"`
+	Properties *GroupProperties   `json:"properties"`
+	Entities   *GroupPostEntities `json:"entities,omitempty"`
 }
 
 // NewGroup instantiates a new Group object
@@ -241,8 +241,8 @@ func (o *Group) HasProperties() bool {
 }
 
 // GetEntities returns the Entities field value
-// If the value is explicit nil, the zero value for GroupEntities will be returned
-func (o *Group) GetEntities() *GroupEntities {
+// If the value is explicit nil, the zero value for GroupPostEntities will be returned
+func (o *Group) GetEntities() *GroupPostEntities {
 	if o == nil {
 		return nil
 	}
@@ -254,7 +254,7 @@ func (o *Group) GetEntities() *GroupEntities {
 // GetEntitiesOk returns a tuple with the Entities field value
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
-func (o *Group) GetEntitiesOk() (*GroupEntities, bool) {
+func (o *Group) GetEntitiesOk() (*GroupPostEntities, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -263,7 +263,7 @@ func (o *Group) GetEntitiesOk() (*GroupEntities, bool) {
 }
 
 // SetEntities sets field value
-func (o *Group) SetEntities(v GroupEntities) {
+func (o *Group) SetEntities(v GroupPostEntities) {
 
 	o.Entities = &v
 

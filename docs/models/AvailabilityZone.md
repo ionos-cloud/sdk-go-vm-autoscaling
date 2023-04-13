@@ -1,14 +1,9 @@
 # AvailabilityZone
 
-The zone where the VMs are created using this configuration.
+## Properties
 
-## PossibleValues
-|Value |
-|------------ |
-|AUTO |
-|ZONE_1 |
-|ZONE_2 |
-
+|Name | Type | Description | Notes|
+|------------ | ------------- | ------------- | -------------|
 
 
 
