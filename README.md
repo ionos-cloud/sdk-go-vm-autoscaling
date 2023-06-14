@@ -1,4 +1,4 @@
-# Go API client for ionoscloud_vm_autoscaling
+# Go API client for ionoscloud_vm_autoscaling 
 
 VM Auto Scaling service enables IONOS clients to horizontally scale the number of VM instances, based on configured rules. Use Auto Scaling to ensure you will have a sufficient number of instances to handle your application loads at all times.
 
