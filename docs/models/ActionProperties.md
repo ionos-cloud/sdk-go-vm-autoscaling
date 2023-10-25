@@ -6,13 +6,12 @@
 |------------ | ------------- | ------------- | -------------|
 |**ActionStatus** | [**ActionStatus**](ActionStatus.md) |  | |
 |**ActionType** | [**ActionType**](ActionType.md) |  | |
-|**TargetReplicaCount** | **int64** | This action is considered successful when the associated autoscaling group reaches this replica count. | |
 
 ## Methods
 
 ### NewActionProperties
 
-`func NewActionProperties(actionStatus ActionStatus, actionType ActionType, targetReplicaCount int64, ) *ActionProperties`
+`func NewActionProperties(actionStatus ActionStatus, actionType ActionType, ) *ActionProperties`
 
 NewActionProperties instantiates a new ActionProperties object
 This constructor will assign default values to properties that have it defined,
@@ -65,27 +64,6 @@ and a boolean to check if the value has been set.
 `func (o *ActionProperties) SetActionType(v ActionType)`
 
 SetActionType sets ActionType field to given value.
-
-
-### GetTargetReplicaCount
-
-`func (o *ActionProperties) GetTargetReplicaCount() int64`
-
-GetTargetReplicaCount returns the TargetReplicaCount field if non-nil, zero value otherwise.
-
-### GetTargetReplicaCountOk
-
-`func (o *ActionProperties) GetTargetReplicaCountOk() (*int64, bool)`
-
-GetTargetReplicaCountOk returns a tuple with the TargetReplicaCount field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetReplicaCount
-
-`func (o *ActionProperties) SetTargetReplicaCount(v int64)`
-
-SetTargetReplicaCount sets TargetReplicaCount field to given value.
-
 
 
 

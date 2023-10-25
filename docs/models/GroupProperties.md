@@ -4,12 +4,11 @@
 
 |Name | Type | Description | Notes|
 |------------ | ------------- | ------------- | -------------|
-|**Datacenter** | Pointer to [**GroupPutPropertiesDatacenter**](GroupPutPropertiesDatacenter.md) |  | [optional] |
+|**Datacenter** | Pointer to [**GroupPropertiesDatacenter**](GroupPropertiesDatacenter.md) |  | [optional] |
 |**Location** | **string** | The data center location. | [readonly] |
-|**MaxReplicaCount** | Pointer to **int64** | The maximum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes. | [optional] |
-|**MinReplicaCount** | Pointer to **int64** | The minimum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes | [optional] |
-|**TargetReplicaCount** | Pointer to **int64** | The target number of VMs in this group. Depending on the scaling policy, this number is automatically adjusted. VMs are automatically created or destroyed to adjust the actual number of VMs to this target number. If &#39;targetReplicaCount&#39; is specified in the request body, it must be &#39;&gt;&#x3D; minReplicaCount&#39; and &#39;&lt;&#x3D; maxReplicaCount&#39;. | [optional] |
-|**Name** | Pointer to **string** | The name of the Auto Scaling group. This field must not be null or blank. | [optional] |
+|**MaxReplicaCount** | Pointer to **int64** | The maximum value for the number of replicas. Must be &gt;&#x3D; 0 and &lt;&#x3D; 100. Will be enforced for both automatic and manual changes. | [optional] |
+|**MinReplicaCount** | Pointer to **int64** | The minimum value for the number of replicas. Must be &gt;&#x3D; 0 and &lt;&#x3D; 100. Will be enforced for both automatic and manual changes | [optional] |
+|**Name** | Pointer to **string** | The name of the VM Auto Scaling Group. This field must not be null or blank. | [optional] |
 |**Policy** | Pointer to [**GroupPolicy**](GroupPolicy.md) |  | [optional] |
 |**ReplicaConfiguration** | Pointer to [**ReplicaPropertiesPost**](ReplicaPropertiesPost.md) |  | [optional] |
 
@@ -34,20 +33,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetDatacenter
 
-`func (o *GroupProperties) GetDatacenter() GroupPutPropertiesDatacenter`
+`func (o *GroupProperties) GetDatacenter() GroupPropertiesDatacenter`
 
 GetDatacenter returns the Datacenter field if non-nil, zero value otherwise.
 
 ### GetDatacenterOk
 
-`func (o *GroupProperties) GetDatacenterOk() (*GroupPutPropertiesDatacenter, bool)`
+`func (o *GroupProperties) GetDatacenterOk() (*GroupPropertiesDatacenter, bool)`
 
 GetDatacenterOk returns a tuple with the Datacenter field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDatacenter
 
-`func (o *GroupProperties) SetDatacenter(v GroupPutPropertiesDatacenter)`
+`func (o *GroupProperties) SetDatacenter(v GroupPropertiesDatacenter)`
 
 SetDatacenter sets Datacenter field to given value.
 
@@ -127,31 +126,6 @@ SetMinReplicaCount sets MinReplicaCount field to given value.
 
 HasMinReplicaCount returns a boolean if a field has been set.
 
-### GetTargetReplicaCount
-
-`func (o *GroupProperties) GetTargetReplicaCount() int64`
-
-GetTargetReplicaCount returns the TargetReplicaCount field if non-nil, zero value otherwise.
-
-### GetTargetReplicaCountOk
-
-`func (o *GroupProperties) GetTargetReplicaCountOk() (*int64, bool)`
-
-GetTargetReplicaCountOk returns a tuple with the TargetReplicaCount field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetReplicaCount
-
-`func (o *GroupProperties) SetTargetReplicaCount(v int64)`
-
-SetTargetReplicaCount sets TargetReplicaCount field to given value.
-
-### HasTargetReplicaCount
-
-`func (o *GroupProperties) HasTargetReplicaCount() bool`
-
-HasTargetReplicaCount returns a boolean if a field has been set.
-
 ### GetName
 
 `func (o *GroupProperties) GetName() string`
@@ -226,6 +200,5 @@ SetReplicaConfiguration sets ReplicaConfiguration field to given value.
 `func (o *GroupProperties) HasReplicaConfiguration() bool`
 
 HasReplicaConfiguration returns a boolean if a field has been set.
-
 
 

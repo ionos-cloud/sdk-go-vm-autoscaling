@@ -11,6 +11,7 @@
 |**FirewallType** | Pointer to **NullableString** | The type of firewall rules that will be allowed on the NIC. If not specified, the default INGRESS value is used. | [optional] |
 |**FlowLogs** | Pointer to [**[]NicFlowLog**](NicFlowLog.md) | List of all flow logs for the specified NIC. | [optional] |
 |**FirewallRules** | Pointer to [**[]NicFirewallRule**](NicFirewallRule.md) | List of all firewall rules for the specified NIC. | [optional] |
+|**TargetGroup** | Pointer to [**TargetGroup**](TargetGroup.md) |  | [optional] |
 
 ## Methods
 
@@ -246,5 +247,29 @@ HasFirewallRules returns a boolean if a field has been set.
 `func (o *ReplicaNic) UnsetFirewallRules()`
 
 UnsetFirewallRules ensures that no value is present for FirewallRules, not even an explicit nil
+### GetTargetGroup
+
+`func (o *ReplicaNic) GetTargetGroup() TargetGroup`
+
+GetTargetGroup returns the TargetGroup field if non-nil, zero value otherwise.
+
+### GetTargetGroupOk
+
+`func (o *ReplicaNic) GetTargetGroupOk() (*TargetGroup, bool)`
+
+GetTargetGroupOk returns a tuple with the TargetGroup field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTargetGroup
+
+`func (o *ReplicaNic) SetTargetGroup(v TargetGroup)`
+
+SetTargetGroup sets TargetGroup field to given value.
+
+### HasTargetGroup
+
+`func (o *ReplicaNic) HasTargetGroup() bool`
+
+HasTargetGroup returns a boolean if a field has been set.
 
 

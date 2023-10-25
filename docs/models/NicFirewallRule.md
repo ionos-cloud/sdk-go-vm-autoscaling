@@ -11,8 +11,8 @@
 |**TargetIp** | Pointer to **NullableString** | If the target NIC has multiple IP addresses, only the traffic directed to the respective IP address of the NIC is allowed. The value &#39;null&#39; allows traffic to any target IP address. | [optional] |
 |**IcmpCode** | Pointer to **NullableInt32** | Sets the allowed code (from 0 to 254) when ICMP protocol is selected. The value &#39;null&#39;&#39; allows all codes. | [optional] |
 |**IcmpType** | Pointer to **NullableInt32** | Sets the allowed type (from 0 to 254) if the protocol ICMP is selected. The value &#39;null&#39; allows all types. | [optional] |
-|**PortRangeStart** | Pointer to **NullableInt32** | Sets the initial range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is selected. The value &#39;null&#39; for &#39;portRangeStart&#39; and &#39;portRangeEnd&#39; allows all ports. | [optional] |
-|**PortRangeEnd** | Pointer to **NullableInt32** | Sets the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is selected. The value &#39;null&#39; for &#39;portRangeStart&#39; and &#39;portRangeEnd&#39; allows all ports. | [optional] |
+|**PortRangeStart** | Pointer to **NullableInt32** | Sets the initial range of the allowed port (from 1 to 65535) if the protocol TCP or UDP is selected. The value &#39;null&#39; for &#39;portRangeStart&#39; and &#39;portRangeEnd&#39; allows all ports. | [optional] |
+|**PortRangeEnd** | Pointer to **NullableInt32** | Sets the end range of the allowed port (from 1 to 65535) if the protocol TCP or UDP is selected. The value &#39;null&#39; for &#39;portRangeStart&#39; and &#39;portRangeEnd&#39; allows all ports. | [optional] |
 |**Type** | Pointer to **NullableString** | The firewall rule type. If not specified, the default value &#39;INGRESS&#39; is used. | [optional] |
 
 ## Methods
@@ -369,5 +369,4 @@ HasType returns a boolean if a field has been set.
 `func (o *NicFirewallRule) UnsetType()`
 
 UnsetType ensures that no value is present for Type, not even an explicit nil
-
 

@@ -1,18 +1,18 @@
-# \GroupsApi
+# \AutoScalingGroupsApi
 
-All URIs are relative to *https://api.ionos.com/cloudapi/autoscaling*
+All URIs are relative to *https://api.ionos.com/autoscaling*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**GroupsActionsFindById**](GroupsApi.md#GroupsActionsFindById) | **Get** /groups/{groupId}/actions/{actionId} | Get Scaling Action Details by ID|
-|[**GroupsActionsGet**](GroupsApi.md#GroupsActionsGet) | **Get** /groups/{groupId}/actions | Get Scaling Actions|
-|[**GroupsDelete**](GroupsApi.md#GroupsDelete) | **Delete** /groups/{groupId} | Delete an Auto Scaling Group by ID|
-|[**GroupsFindById**](GroupsApi.md#GroupsFindById) | **Get** /groups/{groupId} | Get an Auto Scaling by ID|
-|[**GroupsGet**](GroupsApi.md#GroupsGet) | **Get** /groups | Get Auto Scaling Groups|
-|[**GroupsPost**](GroupsApi.md#GroupsPost) | **Post** /groups | Create an Auto Scaling Group|
-|[**GroupsPut**](GroupsApi.md#GroupsPut) | **Put** /groups/{groupId} | Update an Auto Scaling Group by ID|
-|[**GroupsServersFindById**](GroupsApi.md#GroupsServersFindById) | **Get** /groups/{groupId}/servers/{serverId} | Get Auto Scaling Group Server by ID|
-|[**GroupsServersGet**](GroupsApi.md#GroupsServersGet) | **Get** /groups/{groupId}/servers | Get Auto Scaling Group Servers|
+|[**GroupsActionsFindById**](AutoScalingGroupsApi.md#GroupsActionsFindById) | **Get** /groups/{groupId}/actions/{actionId} | Get Scaling Action Details by ID|
+|[**GroupsActionsGet**](AutoScalingGroupsApi.md#GroupsActionsGet) | **Get** /groups/{groupId}/actions | Get Scaling Actions|
+|[**GroupsDelete**](AutoScalingGroupsApi.md#GroupsDelete) | **Delete** /groups/{groupId} | Delete a VM Auto Scaling Group by ID|
+|[**GroupsFindById**](AutoScalingGroupsApi.md#GroupsFindById) | **Get** /groups/{groupId} | Get an Auto Scaling by ID|
+|[**GroupsGet**](AutoScalingGroupsApi.md#GroupsGet) | **Get** /groups | Get VM Auto Scaling Groups|
+|[**GroupsPost**](AutoScalingGroupsApi.md#GroupsPost) | **Post** /groups | Create a VM Auto Scaling Group|
+|[**GroupsPut**](AutoScalingGroupsApi.md#GroupsPut) | **Put** /groups/{groupId} | Update a VM Auto Scaling Group by ID|
+|[**GroupsServersFindById**](AutoScalingGroupsApi.md#GroupsServersFindById) | **Get** /groups/{groupId}/servers/{serverId} | Get VM Auto Scaling Group Server by ID|
+|[**GroupsServersGet**](AutoScalingGroupsApi.md#GroupsServersGet) | **Get** /groups/{groupId}/servers | Get VM Auto Scaling Group Servers|
 
 
 
@@ -38,23 +38,23 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
-    actionId := TODO // string | 
+    actionId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
     groupId := "groupId_example" // string | 
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsActionsFindById(context.Background(), actionId, groupId).Depth(depth).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsActionsFindById(context.Background(), actionId, groupId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsActionsFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsActionsFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsActionsFindById`: Action
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsActionsFindById`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsActionsFindById`: %v\n", resource)
 }
 ```
 
@@ -64,7 +64,7 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**actionId** | [**string**](../models/.md) |  | |
+|**actionId** | **string** |  | |
 |**groupId** | **string** |  | |
 
 ### Other Parameters
@@ -85,6 +85,22 @@ Other parameters are passed through a pointer to an apiGroupsActionsFindByIdRequ
 - **Content-Type**: Not defined
 - **Accept**: application/json
 
+
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsActionsFindById"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsActionsFindById": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsActionsFindById": {
+    "port": "8443",
+},
+})
+```
 
 
 ## GroupsActionsGet
@@ -110,7 +126,7 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
@@ -118,15 +134,15 @@ func main() {
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
     orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsActionsGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsActionsGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsActionsGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsActionsGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsActionsGet`: ActionCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsActionsGet`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsActionsGet`: %v\n", resource)
 }
 ```
 
@@ -158,6 +174,22 @@ Other parameters are passed through a pointer to an apiGroupsActionsGetRequest s
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsActionsGet"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsActionsGet": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsActionsGet": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsDelete
 
@@ -166,7 +198,7 @@ var result  = GroupsDelete(ctx, groupId)
                       .Execute()
 ```
 
-Delete an Auto Scaling Group by ID
+Delete a VM Auto Scaling Group by ID
 
 
 
@@ -180,17 +212,17 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
-    groupId := TODO // string | 
+    groupId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsDelete(context.Background(), groupId).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resp, err := apiClient.AutoScalingGroupsApi.GroupsDelete(context.Background(), groupId).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsDelete``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsDelete``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
 }
@@ -202,7 +234,7 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**groupId** | [**string**](../models/.md) |  | |
+|**groupId** | **string** |  | |
 
 ### Other Parameters
 
@@ -221,6 +253,22 @@ Other parameters are passed through a pointer to an apiGroupsDeleteRequest struc
 - **Content-Type**: Not defined
 - **Accept**: application/json
 
+
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsDelete"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsDelete": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsDelete": {
+    "port": "8443",
+},
+})
+```
 
 
 ## GroupsFindById
@@ -245,22 +293,22 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
     groupId := "groupId_example" // string | 
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsFindById(context.Background(), groupId).Depth(depth).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsFindById(context.Background(), groupId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsFindById`: Group
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsFindById`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsFindById`: %v\n", resource)
 }
 ```
 
@@ -291,6 +339,22 @@ Other parameters are passed through a pointer to an apiGroupsFindByIdRequest str
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsFindById"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsFindById": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsFindById": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsGet
 
@@ -301,7 +365,7 @@ var result GroupCollection = GroupsGet(ctx)
                       .Execute()
 ```
 
-Get Auto Scaling Groups
+Get VM Auto Scaling Groups
 
 
 
@@ -315,22 +379,22 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
     orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsGet(context.Background()).Depth(depth).OrderBy(orderBy).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsGet(context.Background()).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsGet`: GroupCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsGet`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsGet`: %v\n", resource)
 }
 ```
 
@@ -358,6 +422,22 @@ Other parameters are passed through a pointer to an apiGroupsGetRequest struct v
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsGet"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsGet": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsGet": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsPost
 
@@ -367,7 +447,7 @@ var result GroupPostResponse = GroupsPost(ctx)
                       .Execute()
 ```
 
-Create an Auto Scaling Group
+Create a VM Auto Scaling Group
 
 
 
@@ -381,21 +461,21 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
     groupPost := *openapiclient.NewGroupPost("1d67ca27-d4c0-419d-9a64-9ea42dfdd036", *openapiclient.NewGroupProperties("de/txl")) // GroupPost | 
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsPost(context.Background()).GroupPost(groupPost).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsPost(context.Background()).GroupPost(groupPost).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsPost``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsPost``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsPost`: GroupPostResponse
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsPost`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsPost`: %v\n", resource)
 }
 ```
 
@@ -422,6 +502,22 @@ Other parameters are passed through a pointer to an apiGroupsPostRequest struct 
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsPost"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsPost": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsPost": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsPut
 
@@ -431,7 +527,7 @@ var result Group = GroupsPut(ctx, groupId)
                       .Execute()
 ```
 
-Update an Auto Scaling Group by ID
+Update a VM Auto Scaling Group by ID
 
 
 
@@ -445,22 +541,22 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
-    groupId := TODO // string | 
-    groupPut := *openapiclient.NewGroupPut(*openapiclient.NewGroupPutProperties("de/txl", int64(10), int64(1), "Autoscaling Group #1", *openapiclient.NewGroupPolicy(openapiclient.Metric("INSTANCE_CPU_UTILIZATION_AVERAGE"), *openapiclient.NewGroupPolicyScaleInAction(float32(1), openapiclient.ActionAmount("ABSOLUTE"), true), float32(33), *openapiclient.NewGroupPolicyScaleOutAction(float32(1), openapiclient.ActionAmount("ABSOLUTE")), float32(77), openapiclient.QueryUnit("PER_HOUR")), *openapiclient.NewReplicaPropertiesPost(int32(2), int32(2048)))) // GroupPut | 
+    groupId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
+    groupPut := *openapiclient.NewGroupPut(*openapiclient.NewGroupPutProperties("de/txl", int64(10), int64(1), "VM Auto Scaling Group 1", *openapiclient.NewGroupPolicy(openapiclient.Metric("INSTANCE_CPU_UTILIZATION_AVERAGE"), *openapiclient.NewGroupPolicyScaleInAction(float32(1), openapiclient.ActionAmount("ABSOLUTE"), true), float32(33), *openapiclient.NewGroupPolicyScaleOutAction(float32(1), openapiclient.ActionAmount("ABSOLUTE")), float32(77), openapiclient.QueryUnit("PER_HOUR")), *openapiclient.NewReplicaPropertiesPost(int32(2), int32(2048)))) // GroupPut | 
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsPut(context.Background(), groupId).GroupPut(groupPut).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsPut(context.Background(), groupId).GroupPut(groupPut).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsPut``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsPut``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsPut`: Group
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsPut`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsPut`: %v\n", resource)
 }
 ```
 
@@ -470,7 +566,7 @@ func main() {
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
-|**groupId** | [**string**](../models/.md) |  | |
+|**groupId** | **string** |  | |
 
 ### Other Parameters
 
@@ -491,6 +587,22 @@ Other parameters are passed through a pointer to an apiGroupsPutRequest struct v
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsPut"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsPut": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsPut": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsServersFindById
 
@@ -500,7 +612,7 @@ var result Server = GroupsServersFindById(ctx, groupId, serverId)
                       .Execute()
 ```
 
-Get Auto Scaling Group Server by ID
+Get VM Auto Scaling Group Server by ID
 
 
 
@@ -514,23 +626,23 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
     groupId := "groupId_example" // string | 
-    serverId := TODO // string | 
+    serverId := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | 
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsServersFindById(context.Background(), groupId, serverId).Depth(depth).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsServersFindById(context.Background(), groupId, serverId).Depth(depth).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsServersFindById``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsServersFindById``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsServersFindById`: Server
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsServersFindById`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsServersFindById`: %v\n", resource)
 }
 ```
 
@@ -541,7 +653,7 @@ func main() {
 |------------- | ------------- | ------------- | -------------|
 |**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.|
 |**groupId** | **string** |  | |
-|**serverId** | [**string**](../models/.md) |  | |
+|**serverId** | **string** |  | |
 
 ### Other Parameters
 
@@ -562,6 +674,22 @@ Other parameters are passed through a pointer to an apiGroupsServersFindByIdRequ
 - **Accept**: application/json
 
 
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsServersFindById"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsServersFindById": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsServersFindById": {
+    "port": "8443",
+},
+})
+```
+
 
 ## GroupsServersGet
 
@@ -572,7 +700,7 @@ var result ServerCollection = GroupsServersGet(ctx, groupId)
                       .Execute()
 ```
 
-Get Auto Scaling Group Servers
+Get VM Auto Scaling Group Servers
 
 
 
@@ -586,7 +714,7 @@ import (
     "fmt"
     "os"
 
-    ionoscloud_vm_autoscaling "github.com/ionos-cloud/sdk-go-vm-autoscaling"
+    ionoscloud "github.com/ionos-cloud/sdk-go-vm-autoscaling"
 )
 
 func main() {
@@ -594,15 +722,15 @@ func main() {
     depth := float32(8.14) // float32 | With this parameter, you control the level of detail of the response objects:    - ``0``: Only direct properties are included; children (such as executions or transitions) are not considered.    - ``1``: Direct properties and children references are included.    - ``2``: Direct properties and children properties are included.    - ``3``: Direct properties and children properties and children's children are included.    - etc.   (optional)
     orderBy := "orderBy_example" // string | Use this parameter to specify by which the returned list should be sorted. Valid values are: ``createdDate`` and ``lastModifiedDate``. (optional) (default to "createdDate")
 
-    configuration := ionoscloud_vm_autoscaling.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
-    apiClient := ionoscloud_vm_autoscaling.NewAPIClient(configuration)
-    resource, resp, err := apiClient.GroupsApi.GroupsServersGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
+    configuration := ionoscloud.NewConfiguration("USERNAME", "PASSWORD", "TOKEN", "HOST_URL")
+    apiClient := ionoscloud.NewAPIClient(configuration)
+    resource, resp, err := apiClient.AutoScalingGroupsApi.GroupsServersGet(context.Background(), groupId).Depth(depth).OrderBy(orderBy).Execute()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `GroupsApi.GroupsServersGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Error when calling `AutoScalingGroupsApi.GroupsServersGet``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", resp)
     }
     // response from `GroupsServersGet`: ServerCollection
-    fmt.Fprintf(os.Stdout, "Response from `GroupsApi.GroupsServersGet`: %v\n", resource)
+    fmt.Fprintf(os.Stdout, "Response from `AutoScalingGroupsApi.GroupsServersGet`: %v\n", resource)
 }
 ```
 
@@ -633,4 +761,20 @@ Other parameters are passed through a pointer to an apiGroupsServersGetRequest s
 - **Content-Type**: Not defined
 - **Accept**: application/json
 
+
+### URLs Configuration per Operation
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identified by `"AutoScalingGroupsApiService.GroupsServersGet"` string.
+Similar rules for overriding default operation server index and variables apply by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```golang
+ctx := context.WithValue(context.Background(), {packageName}.ContextOperationServerIndices, map[string]int{
+    "AutoScalingGroupsApiService.GroupsServersGet": 2,
+})
+ctx = context.WithValue(context.Background(), {packageName}.ContextOperationServerVariables, map[string]map[string]string{
+    "AutoScalingGroupsApiService.GroupsServersGet": {
+    "port": "8443",
+},
+})
+```
 

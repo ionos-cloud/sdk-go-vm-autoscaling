@@ -103,4 +103,3 @@ SetErrorUuid sets ErrorUuid field to given value.
 HasErrorUuid returns a boolean if a field has been set.
 
 
-

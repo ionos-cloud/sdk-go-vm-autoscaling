@@ -6,10 +6,9 @@
 |------------ | ------------- | ------------- | -------------|
 |**Datacenter** | Pointer to [**GroupPutPropertiesDatacenter**](GroupPutPropertiesDatacenter.md) |  | [optional] |
 |**Location** | **string** | The data center location. | [readonly] |
-|**MaxReplicaCount** | **int64** | The maximum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes. | |
-|**MinReplicaCount** | **int64** | The minimum value for the number of replicas for &#39;targetReplicaCount&#39;. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes | |
-|**TargetReplicaCount** | Pointer to **int64** | The target number of VMs in this group. Depending on the scaling policy, this number is automatically adjusted. VMs are automatically created or destroyed to adjust the actual number of VMs to this target number. If &#39;targetReplicaCount&#39; is specified in the request body, it must be &#39;&gt;&#x3D; minReplicaCount&#39; and &#39;&lt;&#x3D; maxReplicaCount&#39;. | [optional] |
-|**Name** | **string** | The name of the Auto Scaling group. This field must not be null or blank. | |
+|**MaxReplicaCount** | **int64** | The maximum value for the number of replicas on a VM Auto Scaling Group. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes. | |
+|**MinReplicaCount** | **int64** | The minimum value for the number of replicas on a VM Auto Scaling Group. Must be &gt;&#x3D; 0 and &lt;&#x3D; 200. Will be enforced for both automatic and manual changes | |
+|**Name** | **string** | The name of the VM Auto Scaling Group. This field must not be null or blank. | |
 |**Policy** | [**GroupPolicy**](GroupPolicy.md) |  | |
 |**ReplicaConfiguration** | [**ReplicaPropertiesPost**](ReplicaPropertiesPost.md) |  | |
 
@@ -117,31 +116,6 @@ and a boolean to check if the value has been set.
 SetMinReplicaCount sets MinReplicaCount field to given value.
 
 
-### GetTargetReplicaCount
-
-`func (o *GroupPutProperties) GetTargetReplicaCount() int64`
-
-GetTargetReplicaCount returns the TargetReplicaCount field if non-nil, zero value otherwise.
-
-### GetTargetReplicaCountOk
-
-`func (o *GroupPutProperties) GetTargetReplicaCountOk() (*int64, bool)`
-
-GetTargetReplicaCountOk returns a tuple with the TargetReplicaCount field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetTargetReplicaCount
-
-`func (o *GroupPutProperties) SetTargetReplicaCount(v int64)`
-
-SetTargetReplicaCount sets TargetReplicaCount field to given value.
-
-### HasTargetReplicaCount
-
-`func (o *GroupPutProperties) HasTargetReplicaCount() bool`
-
-HasTargetReplicaCount returns a boolean if a field has been set.
-
 ### GetName
 
 `func (o *GroupPutProperties) GetName() string`
@@ -200,7 +174,6 @@ and a boolean to check if the value has been set.
 `func (o *GroupPutProperties) SetReplicaConfiguration(v ReplicaPropertiesPost)`
 
 SetReplicaConfiguration sets ReplicaConfiguration field to given value.
-
 
 
 

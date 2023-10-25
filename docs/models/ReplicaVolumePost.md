@@ -11,7 +11,7 @@
 |**SshKeys** | Pointer to **[]string** | The SSH keys of this volume. | [optional] |
 |**Type** | [**VolumeHwType**](VolumeHwType.md) |  | |
 |**UserData** | Pointer to **string** | The user data (Cloud Init) for this replica volume. | [optional] |
-|**Bus** | Pointer to [**BusType**](BusType.md) |  | [optional] [default to VIRTIO]|
+|**Bus** | Pointer to [**BusType**](BusType.md) |  | [optional] [default to BUSTYPE_VIRTIO]|
 |**BackupunitId** | Pointer to **string** | The ID of the backup unit that the user has access to. The property is immutable and is only allowed to be set on creation of a new a volume. It is mandatory to provide either &#39;public image&#39; or &#39;imageAlias&#39; in conjunction with this property. | [optional] |
 |**BootOrder** | **string** | Determines whether the volume will be used as a boot volume. Set to NONE, the volume will not be used as boot volume. Set to PRIMARY, the volume will be used as boot volume and set to AUTO will delegate the decision to the provisioning engine to decide whether to use the voluem as boot volume. Notice that exactly one volume can be set to PRIMARY or all of them set to AUTO. | |
 |**ImagePassword** | Pointer to **string** | The image password for this replica volume. | [optional] |
@@ -309,6 +309,5 @@ SetImagePassword sets ImagePassword field to given value.
 `func (o *ReplicaVolumePost) HasImagePassword() bool`
 
 HasImagePassword returns a boolean if a field has been set.
-
 
 

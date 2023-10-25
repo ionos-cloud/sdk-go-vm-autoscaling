@@ -72,4 +72,3 @@ SetName sets Name field to given value.
 HasName returns a boolean if a field has been set.
 
 
-

@@ -10,7 +10,7 @@
 |**ScaleInThreshold** | **float32** | The lower threshold for the value of the &#39;metric&#39;. Used with the &#x60;less than&#x60; (&lt;) operator. When this value is exceeded, a scale-in action is triggered, specified by the &#39;scaleInAction&#39; property. The value must have a higher minimum delta to the &#39;scaleOutThreshold&#39;, depending on the &#39;metric&#39;, to avoid competing for actions at the same time. | |
 |**ScaleOutAction** | [**GroupPolicyScaleOutAction**](GroupPolicyScaleOutAction.md) |  | |
 |**ScaleOutThreshold** | **float32** | The upper threshold for the value of the &#39;metric&#39;. Used with the &#39;greater than&#39; (&gt;) operator. A scale-out action is triggered when this value is exceeded, specified by the &#39;scaleOutAction&#39; property. The value must have a lower minimum delta to the &#39;scaleInThreshold&#39;, depending on the metric, to avoid competing for actions simultaneously. If &#39;properties.policy.unit&#x3D;TOTAL&#39;, a value &gt;&#x3D; 40 must be chosen. | |
-|**Unit** | [**QueryUnit**](QueryUnit.md) |  | [default to TOTAL]|
+|**Unit** | [**QueryUnit**](QueryUnit.md) |  | [default to QUERYUNIT_TOTAL]|
 
 ## Methods
 
@@ -174,7 +174,6 @@ and a boolean to check if the value has been set.
 `func (o *GroupPolicy) SetUnit(v QueryUnit)`
 
 SetUnit sets Unit field to given value.
-
 
 
 
