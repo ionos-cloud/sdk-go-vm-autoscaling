@@ -9,7 +9,7 @@
 |**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
 |**Metadata** | Pointer to [**Metadata**](Metadata.md) |  | [optional] |
 |**Properties** | [**GroupProperties**](GroupProperties.md) |  | |
-|**Entities** | Pointer to [**GroupPostEntities**](GroupPostEntities.md) |  | [optional] |
+|**Entities** | Pointer to [**GroupEntities**](GroupEntities.md) |  | [optional] |
 
 ## Methods
 
@@ -147,20 +147,20 @@ SetProperties sets Properties field to given value.
 
 ### GetEntities
 
-`func (o *Group) GetEntities() GroupPostEntities`
+`func (o *Group) GetEntities() GroupEntities`
 
 GetEntities returns the Entities field if non-nil, zero value otherwise.
 
 ### GetEntitiesOk
 
-`func (o *Group) GetEntitiesOk() (*GroupPostEntities, bool)`
+`func (o *Group) GetEntitiesOk() (*GroupEntities, bool)`
 
 GetEntitiesOk returns a tuple with the Entities field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEntities
 
-`func (o *Group) SetEntities(v GroupPostEntities)`
+`func (o *Group) SetEntities(v GroupEntities)`
 
 SetEntities sets Entities field to given value.
 

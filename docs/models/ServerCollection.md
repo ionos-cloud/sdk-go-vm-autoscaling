@@ -7,7 +7,7 @@
 |**Id** | **string** | The unique resource identifier. | [readonly] |
 |**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
 |**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
-|**Items** | Pointer to [**[]ServerResource**](ServerResource.md) |  | [optional] |
+|**Items** | Pointer to [**[]Server**](Server.md) |  | [optional] |
 
 ## Methods
 
@@ -100,20 +100,20 @@ HasHref returns a boolean if a field has been set.
 
 ### GetItems
 
-`func (o *ServerCollection) GetItems() []ServerResource`
+`func (o *ServerCollection) GetItems() []Server`
 
 GetItems returns the Items field if non-nil, zero value otherwise.
 
 ### GetItemsOk
 
-`func (o *ServerCollection) GetItemsOk() (*[]ServerResource, bool)`
+`func (o *ServerCollection) GetItemsOk() (*[]Server, bool)`
 
 GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetItems
 
-`func (o *ServerCollection) SetItems(v []ServerResource)`
+`func (o *ServerCollection) SetItems(v []Server)`
 
 SetItems sets Items field to given value.
 

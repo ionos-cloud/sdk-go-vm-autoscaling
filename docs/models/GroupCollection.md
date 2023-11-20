@@ -7,7 +7,7 @@
 |**Id** | **string** | The unique resource identifier. | [readonly] |
 |**Type** | Pointer to **string** | The resource type. | [optional] [readonly] |
 |**Href** | Pointer to **string** | The absolute URL to the resource&#39;s representation. | [optional] [readonly] |
-|**Items** | Pointer to [**[]GroupResource**](GroupResource.md) |  | [optional] |
+|**Items** | Pointer to [**[]Group**](Group.md) |  | [optional] |
 
 ## Methods
 
@@ -100,20 +100,20 @@ HasHref returns a boolean if a field has been set.
 
 ### GetItems
 
-`func (o *GroupCollection) GetItems() []GroupResource`
+`func (o *GroupCollection) GetItems() []Group`
 
 GetItems returns the Items field if non-nil, zero value otherwise.
 
 ### GetItemsOk
 
-`func (o *GroupCollection) GetItemsOk() (*[]GroupResource, bool)`
+`func (o *GroupCollection) GetItemsOk() (*[]Group, bool)`
 
 GetItemsOk returns a tuple with the Items field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetItems
 
-`func (o *GroupCollection) SetItems(v []GroupResource)`
+`func (o *GroupCollection) SetItems(v []Group)`
 
 SetItems sets Items field to given value.
 
