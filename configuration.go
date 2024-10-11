@@ -29,10 +29,16 @@ const (
 	IonosPinnedCertEnvVar = "IONOS_PINNED_CERT"
 	IonosLogLevelEnvVar   = "IONOS_LOG_LEVEL"
 	DefaultIonosServerUrl = "https://api.ionos.com/autoscaling"
-	DefaultIonosBasePath  = "/autoscaling"
+	DefaultIonosBasePath  = ""
 	defaultMaxRetries     = 3
 	defaultWaitTime       = time.Duration(100) * time.Millisecond
 	defaultMaxWaitTime    = time.Duration(2000) * time.Millisecond
+)
+
+var (
+	IonosServerUrls = []string{
+		"https://api.ionos.com/autoscaling",
+	}
 )
 
 // contextKeys are used to identify the type of value in the context.
@@ -129,7 +135,7 @@ func NewConfiguration(username, password, token, hostUrl string) *Configuration 
 	cfg := &Configuration{
 		DefaultHeader:      make(map[string]string),
 		DefaultQueryParams: url.Values{},
-		UserAgent:          "ionos-cloud-sdk-go-vm-autoscaling/v1.0.1",
+		UserAgent:          "ionos-cloud-sdk-go-vm-autoscaling/v1.1.0",
 		Debug:              false,
 		Username:           username,
 		Password:           password,
